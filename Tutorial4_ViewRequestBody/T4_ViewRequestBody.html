@@ -1,0 +1,450 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>CS4010 Fall 2019: Tutorial 4. View Request Body</title>
+<style type="text/css">
+body {
+   color: #333333; 
+   margin: 0 auto;
+   font-size: 1em;
+   font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+   text-align: center;
+}
+h1 {
+   font-size: 1.6em;
+   color: #333;
+   font-weight : normal;
+   padding:10px;
+   margin: 20px 10px 10px 0px;
+   text-align:center;
+}
+h2 {
+   font-size: 1.3em;
+   color: black;  
+   font-weight : normal; 
+   padding:5px 0px 2px 0px;
+   margin:0px 0px 5px 0px;
+   border-bottom:1px solid #D1d1d1; 
+   text-align:left;
+}
+.baseFont { 
+   font-size: 1.1em;
+   font-family: helvetica, arial, sans-serif; 
+}
+.linegap1 {
+   line-height: 160%
+}
+.indent {
+   position: relative;
+   left: 1em;
+   width: 45em;
+}
+.inframe { 
+   border: 2px solid;
+   position:relative;
+   margin: 0 auto;
+   top: 5px;
+   color: black;
+   border-color: #00BFFF;
+   width: 50em;
+   display: block; 
+   padding: 1.5em;
+   text-align: left;
+   background-color: #FFF; 
+}
+pre {
+   background-color:#FFF8E4;
+   padding:10px;
+   font-size: 1.3em;
+   _font-size: 1.2em;
+}
+pre,samp,code,tt {
+   font-family: "Courier New", monospace;
+   font-size:1.1em;
+   color:black;
+}
+.examplecode  {
+   background-color:#FFF8E4;
+   overflow:auto;
+   width:95%;
+}
+.upper {
+    position: relative;
+    top: -1.6em;
+}
+.upper1 {
+    position: relative;
+    top: -1.3em;
+}
+</style>
+</head>
+<body>
+  <div class="inframe baseFont linegap1">
+    <h1>Tutorial 4. View Request Body</h1>
+    <center>by Dr. Wenjie He</center>
+    <p></p>
+    <p></p>
+    <b>1. Run the example</b>
+    <p></p>
+    <p></p>
+    In this tutorial, we will view the structure of a request body through a servlet. The goal of this tutorial is to help
+	us understand the HTTP protocol and some basic things to process data in a servlet.
+	<p></p>
+    <p></p>
+	You can find the source code of this example in the folder <tt>Tutorial4_ViewRequestBody/Code</tt>. In this folder, there are
+	two sub-folders: <tt>src</tt> and <tt>WebContent</tt>. The <tt>src</tt> folder contains the Java source files, and 
+	<tt>WebContent</tt> contains other files for the web application.
+	<p></p>
+	Let us first run the example. Then we will understand the details in it.
+	<p></p>
+    <ol>
+         <li>Start Eclipse for Java EE.</li>
+		 <p></p>
+		 Next we create a <i>Dynamic Web Project</i>.
+	     <p></p>
+         <p></p>
+         <li>In the Eclipse IDE, do the following steps:</li>
+		 <p></p>
+		 &nbsp; &nbsp; <b>File</b> &nbsp; &rArr; &nbsp; <b>New</b> &nbsp; &rArr; &nbsp; <b>Dynamic Web Project</b> &nbsp; &rArr; &nbsp; 
+		 <p></p>
+		 <p></p>
+		 <img src="images/dynamic.png" alt="Dynamic Web Project" />
+         <p></p>
+         <p></p>
+		 <li>Type the project name: <tt>ViewRequestBody</tt> and make sure that Tomcat is selected as your <i>Target Runtime</i>.
+         </li>
+		 <p></p>
+		 <p></p>
+		 <img src="images/ProjectName.png" alt="Project Name" />
+		 <p></p>
+		 <p></p>
+		 Then click the <b>Next</b> button.
+		 <p></p>
+		 <p></p>
+		 <img src="images/skipwin.png" alt="Accept Default" />
+		 <p></p>
+		 <p></p>
+		 Accept the default setting and click the <b>Next</b> button.
+		 <p></p>
+		 <p></p>
+		 <li>Generate the <i>Deployment Description</i> file for later configuration.
+         </li>
+		 <p></p>
+		 <p></p>
+		 <img src="images/webxml0.png" alt="First DD" />
+		 <p></p>
+		 <p></p>
+		 In the current window, by default, the <i>Deployment Description</i> checkbox is not selected. We need this file
+		 to configure our <i>welcome file</i>. Check the checkbox.
+		 <p></p>
+		 <p></p>
+		 <img src="images/webxml1.png" alt="2nd DD" />
+		 <p></p>
+		 <p></p>
+		 Click the <b>Finish</b> button.
+		 <p></p>
+		 <p></p>
+	     <li>A <i>Dynamic Web Project</i> is created in the Eclipse.
+         </li>
+		 <p></p>
+		 <p></p>
+		 <img src="images/emptyproj.png" alt="Project Structure" />
+		 <p></p>
+		 <p></p>
+		 Expand the <b>Java Resources</b> node, the <b>src</b> node will hold all our Java source files.
+		 <p></p>
+		 <p></p>
+		 Expand the <b>WebContent</b> node. This node will contain all our web resource files.
+		 <p></p>
+		 <p></p>
+		 <img src="images/webcontnode.png" alt="WebContent" />
+		 <p></p>
+		 <p></p>
+		 <li>Copy the Java source files by drag-and-drop.
+         </li>
+		 <p></p>
+		 <p></p>
+		 The Eclipse IDE supports the drag-and-drop feature to provide the convenience for the programmers.
+		 <p></p>
+		 <p></p>
+		 &nbsp; &nbsp; Go to the folder <tt>Tutorial4_ViewRequestBody/Code/src</tt> and drag the folder <tt>edu</tt> from it and drop it
+		 onto the node <tt>src</tt> that is under the node <tt>Java Resources</tt> in the project.
+		 <p></p>
+		 <img src="images/dragndrop.png" alt="drag-and-drop" />
+		 <p></p>
+		 <p></p>
+		 <li>Copy the welcome file by drag-and-drop.
+         </li>
+		 <p></p>
+		 <p></p>
+		 &nbsp; &nbsp; Go to the folder <tt>Tutorial4_ViewRequestBody/Code/WebContent</tt> and drag the file <tt>form.html</tt> from it and drop it
+		 onto the node <tt>WebContent</tt> in the project.
+		 <hr />
+		 <b>Note:</b> Do not drop it in other sub-folders, such as the <tt>WEB-INF</tt> folder.
+		 <hr />
+		 <p></p>
+		 <p></p>
+		 <img src="images/welcome.png" alt="welcome file" />
+		 <p></p>
+		 <p></p>
+		 <li>Configure the welcome file inside the <tt>web.xml</tt> file</li>
+		 <p></p>
+		 <p></p>
+		 Expand the node <tt>WEB-INF</tt> and double-click the file <tt>web.xml</tt> file.
+		 Change the filename from <tt>index.html</tt> to <tt>form.html</tt>. You will see
+		 <p></p>
+		 <p></p>
+		 <img src="images/changefile.png" alt="Change File Name" />
+		 <p></p>
+		 <p></p>
+	     <li>Now we are ready to run the project:
+	     </li>
+		 <p></p>
+		 <p></p>
+		 &nbsp; &nbsp; Rifgt-click the <i>ViewRequestBody</i> project node &nbsp; &rArr; &nbsp; <b>Run As</b> &nbsp; &rArr; &nbsp; <b>Run on Server</b> &nbsp; &rArr; &nbsp; 
+		 <p></p>
+		 <p></p>
+		 You will see the page:
+		 <p></p>
+		 <p></p>
+		 <img src="images/beeropt.png" alt="Beer Options" />
+		 <p></p>
+		 <p></p>
+		 Select more than one sizes as follows, so that we can see how to send multiple values for the same parameter:
+		 <p></p>
+		 <p></p>
+		 <img src="images/multisizes.png" alt="Multiple Sizes" />
+		 <p></p>
+		 <p></p>
+		 Click the <b>Submit Query</b> button, you will see the result: 
+		 <p></p>
+		 <p></p>
+		 <img src="images/resultbody.png" alt="Result Body" />
+		 <p></p>
+		 <p></p>
+    </ol>
+	<p></p>
+    <p></p>
+    <b>2. Understand the code</b>
+    <p></p>
+    <p></p>
+	In this example, there are three files: <tt>form.html, web.xml</tt>, and <tt>ViewRequestBody.java</tt>. Since the 
+	configuration file <tt>web.xml</tt> is very simple and easy to understand, we will look at the other two files.
+    <p></p>
+    <p></p>
+	<b>2.1. Understand the code</b> <tt>form.html</tt>
+    <p></p>
+	<p></p>
+	This file is the welcome file of this web application. It is also used to get the user's input. The user's input data
+	will be sent to the servlet for processing.
+	<p></p>
+    <code><b>Code Listing:</b> form.html</code>
+	<table width="900">
+      <tr><td>
+<table width="6" class="baseFont0 upper1">
+<tr>
+<td>&nbsp;1<br />&nbsp;2<br />&nbsp;3<br />&nbsp;4<br />&nbsp;5<br />&nbsp;6<br />&nbsp;7<br />&nbsp;8<br />&nbsp;9<br />&nbsp;10<br />&nbsp;11<br />&nbsp;12
+<br />&nbsp;13<br />&nbsp;14<br />&nbsp;15<br />&nbsp;16<br />&nbsp;17<br />&nbsp;18<br />&nbsp;19<br />&nbsp;20<br />
+&nbsp;21<br />&nbsp;22<br />&nbsp;23<br />&nbsp;24<br />&nbsp;25<br />&nbsp;26<br />
+&nbsp;27<br />&nbsp;28<br />&nbsp;29<br />&nbsp;30<br /></td>
+</tr>
+</table>
+     </td>
+     <td>
+    <pre class="examplecode smfont">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="ISO-8859-1"&gt;
+&lt;title&gt;Super Beer&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;form method="post" action="viewRequest"&gt;
+  Select beer characteristics&lt;p&gt;
+  Color:
+  &lt;select name="color" size="1"&gt;
+    &lt;option&gt;light&lt;/option&gt;
+    &lt;option&gt;amber&lt;/option&gt;
+    &lt;option&gt;brown&lt;/option&gt;
+    &lt;option&gt;dark&lt;/option&gt;
+  &lt;/select&gt;
+  Body:
+  &lt;select name="body" size="1"&gt;
+    &lt;option&gt;light&lt;/option&gt;
+    &lt;option&gt;medium&lt;/option&gt;
+    &lt;option&gt;heavy&lt;/option&gt;
+  &lt;/select&gt;&lt;br /&gt;&lt;br /&gt;
+  Can sizes:&lt;p&gt;
+  &lt;input type="checkbox" name="sizes" value="12oz" /&gt;12 oz.&lt;br /&gt;
+  &lt;input type="checkbox" name="sizes" value="16oz" /&gt;16 oz.&lt;br /&gt;
+  &lt;input type="checkbox" name="sizes" value="22oz" /&gt;22 oz.&lt;br /&gt;&lt;br /&gt;
+  &lt;input type="submit" /&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+    </pre>
+    </td></tr>
+    </table>
+    <p></p>
+	<p></p>
+	<ol>
+	   <li>(Lines 8-28) &nbsp; This is the main part of this file. It is an HTML form that is used to send the user's data.
+	   </li>
+	   <p></p>
+       <li>(Line 8) &nbsp; Here we used the <tt>post</tt> method, because we want to send the data through the request body.
+	   The <tt>get</tt> method can only send data through the request line. </li>
+	   <p></p>
+	   <li>(Line 8) &nbsp; The value for the <tt>action</tt> attribute is <tt>viewRequest</tt>, which is the servlet URL 
+	   pattern (we will see its configuration inside the servlet using an annotation). </li>
+	   <p></p>
+	   <li>(Lines 11-16) &nbsp; We use a dropdown list to send the parameter <tt>color</tt>. We use the value <tt>color</tt>
+	   for the <tt>name</tt> attribute of the <tt>select</tt> element.</li>
+	   <p></p>
+	   <li>(Lines 18-22) &nbsp; Similarly, we use another dropdown list to send the parameter <tt>body</tt>.</li>
+	   <p></p>
+	   <li>(Lines 24-26) &nbsp; We use a list of checkboxes to send multiple values for the parameter <tt>sizes</tt>.
+	   Notice that the three checkboxes use the same parameter name <tt>sizes</tt>. In this way, when more than one checkboxes
+	   are checked, multiple values will be sent to the servlet under the same name <tt>sizes</tt>.</li>
+	   <p></p>
+	   <li>(Line 27) &nbsp; When the <tt>submit</tt> button is clicked, all the data inside the form will be sent to the server,
+	   and only the data inside this form will be sent. That means the data outside the form will not be sent to the server.</li>
+	   <p></p>
+	   Some basic facts about the HTML forms:
+	   <p></p>
+	   <ul>
+	      <li>The HTML forms cannot be nested. That is, you cannot put an HTML form inside another HTML form.</li>
+		  <p></p>
+		  <li>An HTML page can contain multiple HTML forms. Each form can have its own back-end processing file placed inside
+		  the <tt>action</tt> attribute.</li>
+		  <p></p>
+		  <li>When you have multiple HTML forms in an HTML page, if you click the <tt>submit</tt> button, only the current 
+		  form will be submitted to its own back-end data processing file. Data contained in other forms will be ignored.</li>
+	   </ul>
+	</ol>
+	<p></p>
+	<p></p>
+	<b>2.2. Understand the code</b> <tt>ViewRequestServlet.java</tt>
+    <p></p>
+	<p></p>
+	This is a servlet that we use to process the HTML form submitted from the welcome page <tt>form.html</tt>.
+	<p></p>
+	<p></p>
+	<code><b>Code Listing:</b> ViewRequestServlet.java</code>
+	<table width="900">
+      <tr><td>
+<table width="6" class="baseFont0 upper1">
+<tr>
+<td>&nbsp;1<br />&nbsp;2<br />&nbsp;3<br />&nbsp;4<br />&nbsp;5<br />&nbsp;6<br />&nbsp;7<br />&nbsp;8<br />&nbsp;9<br />&nbsp;10<br />&nbsp;11<br />&nbsp;12
+<br />&nbsp;13<br />&nbsp;14<br />&nbsp;15<br />&nbsp;16<br />&nbsp;17<br />&nbsp;18<br />&nbsp;19<br />&nbsp;20<br />
+&nbsp;21<br />&nbsp;22<br />&nbsp;23<br />&nbsp;24<br />&nbsp;25<br />&nbsp;26<br />
+&nbsp;27<br />&nbsp;28<br />&nbsp;29<br />&nbsp;30<br />&nbsp;31<br />&nbsp;32<br />
+&nbsp;33<br />&nbsp;34<br />&nbsp;35<br />&nbsp;36<br />&nbsp;37<br />&nbsp;38<br />
+&nbsp;39<br />&nbsp;40<br />&nbsp;41<br />&nbsp;42<br />&nbsp;43<br />&nbsp;44<br />
+&nbsp;45<br />&nbsp;46<br /></td>
+</tr>
+</table>
+     </td>
+     <td>
+    <pre class="examplecode smfont">
+package edu.umsl.java.web;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+<b>@WebServlet("/viewRequest")</b>
+public class ViewRequestServlet extends HttpServlet {
+   private static final long serialVersionUID = 1L;
+
+   protected void <b>doPost(HttpServletRequest request,
+    HttpServletResponse response)</b> throws ServletException, IOException {
+		
+      String ipaddr = request.<b>getRemoteAddr()</b>;
+      String client = request.<b>getHeader("User-Agent")</b>;
+
+      response.<b>setContentType("text/html")</b>;
+      <b>PrintWriter out = response.getWriter()</b>;
+		
+      out.println(ipaddr);
+      out.println("&lt;br /&gt;");
+      out.println(client);
+      out.println("&lt;br /&gt;");
+
+      String line = null;
+
+      try {
+         <b>BufferedReader reader = request.getReader();
+
+         while ((line = reader.readLine()) != null) {
+            out.println(line);
+         }</b>
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+		
+      <b>out.flush();
+      out.close();</b>
+   }
+}
+    </pre>
+    </td></tr>
+    </table>
+    <p></p>
+	<p></p>
+	<ol>
+	   <li>(Line 13) &nbsp; This is the annotation-type servlet configuration. The URL pattern <tt>/viewRequest</tt> of
+	   this servlet is specified in the annotation. This way of configuration is popular due to its simplicity.
+	   </li>
+	   <p></p>
+       <li>(Lines 17-18) &nbsp; Corresponding to the <tt>post</tt> method in the HTML form, we use the <tt>doPost</tt> method
+	   for data processing. The servlet container prepares the <tt>HttpServletRequest</tt> object <tt>request</tt> and the
+	   <tt>HttpServletResponse</tt> object <tt>response</tt> for this method. We just use them directly in this method.</li>
+	   <p></p>
+	   <li>(Line 20) &nbsp; We retrieve the IP address of the user using the method <tt>getRemoteAddr()</tt>, which could be useful for some of
+	   the applications. </li>
+	   <p></p>
+	   <li>(Line 21) &nbsp; We retrieve the <tt>User-Agent</tt> information using the method <tt>getHeader</tt>,
+	   so that we can get the client's OS type and the browser's type.</li>
+	   <p></p>
+	   <li>(Line 23) &nbsp; We set the response header <tt>Content-Type</tt> as the MIME type <tt>text/html</tt> for the HTML
+	   content. For different type of response content, we need to choose the appropriate MIME type. </li>
+	   <p></p>
+	   <li>(Line 24) &nbsp; Since our response content is of text content, we use the <tt>PrintWriter</tt> object which is
+	   an output stream object for text content.</li>
+	   <p></p>
+	   <li>(Lines 26-29) &nbsp; That is the way we produce the text content in a set of string values.</li>
+	   <p></p>
+	   <li>(Lines 34-38) &nbsp; We use a <tt>BufferedReader</tt> object to print out the message body part line by line.</li>
+	   <p></p>
+	   <li>(Line 43) &nbsp; When the response content is sent, a buffer is used to carry part of the content. When the buffer
+	   is full, then its content will be sent automatically; but if the buffer is not full, its content will not be sent.
+	   Now we have completed everything, and we want to force the network to send its content immediately. So we call the 
+	   method <tt>flush</tt> to do it.
+	   </li>
+	   <p></p>
+	   <li>(Line 44) &nbsp; The output stream object <tt>out</tt> occupies memory resource. When we do not need it any 
+	   more, we should release it, so that we can save some memory resource and make the web application faster.</li>
+	   <p></p>
+	</ol>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<center><span style="color: #D20106;">==========The End==========</span></center>
+  </div>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>CS4010 Fall 2019: Tutorial 6. Duke: Our First JSP</title>
+<style type="text/css">
+body {
+   color: #333333; 
+   margin: 0 auto;
+   font-size: 1em;
+   font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+   text-align: center;
+}
+h1 {
+   font-size: 1.6em;
+   color: #333;
+   font-weight : normal;
+   padding:10px;
+   margin: 20px 10px 10px 0px;
+   text-align:center;
+}
+h2 {
+   font-size: 1.3em;
+   color: black;  
+   font-weight : normal; 
+   padding:5px 0px 2px 0px;
+   margin:0px 0px 5px 0px;
+   border-bottom:1px solid #D1d1d1; 
+   text-align:left;
+}
+.baseFont { 
+   font-size: 1.1em;
+   font-family: helvetica, arial, sans-serif; 
+}
+.linegap1 {
+   line-height: 160%
+}
+.indent {
+   position: relative;
+   left: 1em;
+   width: 45em;
+}
+.inframe { 
+   border: 2px solid;
+   position:relative;
+   margin: 0 auto;
+   top: 5px;
+   color: black;
+   border-color: #00BFFF;
+   width: 50em;
+   display: block; 
+   padding: 1.5em;
+   text-align: left;
+   background-color: #FFF; 
+}
+pre {
+   background-color:#FFF8E4;
+   padding:10px;
+   font-size: 1.3em;
+   _font-size: 1.2em;
+}
+pre,samp,code,tt {
+   font-family: "Courier New", monospace;
+   font-size:1.1em;
+   color:black;
+}
+.examplecode  {
+   background-color:#FFF8E4;
+   overflow:auto;
+   width:97%;
+}
+.upper {
+    position: relative;
+    top: -1em;
+}
+.upper1 {
+    position: relative;
+    top: -0.8em;
+}
+</style>
+</head>
+<body>
+  <div class="inframe baseFont linegap1">
+    <h1>Tutorial 6. Duke: Our First JSP</h1>
+    <center>by Dr. Wenjie He</center>
+    <p></p>
+    <p></p>
+    <b>1. Run the example</b>
+    <p></p>
+    <p></p>
+    In this tutorial, we will learn a few basic concepts about the Java JSP technology. This example has two JSP files
+	and one image file. &nbsp; Note: There is no Java <tt>.java</tt> file in this simple example. 
+	<p></p>
+    <p></p>
+	You can find the source code of this example in the folder <tt>Tutorial6_DukeFirstJSP/SourceCode</tt>. In this folder, there are
+	three files: <tt>index.jsp, response.jsp</tt> and <tt>duke.waving.gif</tt>. The file <tt>index.jsp</tt> is the <tt>welcome</tt> file,
+	and this file plays several roles: <p></p>
+	<ul>
+	   <li>User's interface</li><p></p>
+	   <li>Data processing file</li><p></p>
+	   <li>Display the response result</li>
+	</ul>
+	<p></p>
+	The other JSP file <tt>response.jsp</tt> is used to embed a piece of dynamic content in the response result.
+	<p></p>
+	The procedure to run the example is similar to that of our other tutorials. When you do it, pay attention to the
+	following points: <p></p>
+	<ul>
+	   <li>When you create a <tt>Dynamic Web Project</tt>, generate the <tt>web.xml</tt> in one of the windows.
+	       Since our <tt>index.jsp</tt> is already in the <tt>welcome file list</tt>, we do not need to do anything
+		   in <tt>web.xml</tt>.
+	   </li><p></p>
+	   <li>Copy the files using <i>drag-and-drop</i> for all the three files in the folder <tt>Tutorial6_DukeFirstJSP/SourceCode</tt>
+	       onto the <tt>WebContent</tt> node of your <tt>Duke</tt> project. You should see your project as follows,
+		   <p></p>
+           <p></p>
+	       <img src="images/proj.png" alt="Project" />
+	       <p></p>
+           <p></p>
+	   </li><p></p>
+	   <li>You do not need to do anything on the code. You can run the project now.</li>
+	</ul>
+	<p></p>
+	After you start the project, you will see a page as follows,
+	<p></p>
+    <p></p>
+	<img src="images/start.png" alt="Start" />
+	<p></p>
+    <p></p>
+	Then you enter a string in the input field, and click the <b>Submit</b> button. You will see the result as follows,
+	<p></p>
+    <p></p>
+	<img src="images/result.png" alt="Result" />
+	<p></p>
+    <p></p>
+    <b>2. Understand the code</b>
+    <p></p>
+    <p></p>
+	Let us try to understand the two JSP files.
+    <p></p>
+    <p></p>
+	<b>2.1. Understand the code</b> <tt>index.jsp</tt>
+    <p></p>
+	<p></p>
+	This file is the welcome file of this web application. It is also used to get the user's input. The user's input data
+	will be sent to this same file for processing, because a JSP file can use <i>embedded Java code</i> to do dynamic data processing.
+	<p></p>
+    <code><b>Code Listing:</b> index.jsp</code>
+	<table width="900">
+      <tr><td>
+<table width="6" class="baseFont0 upper1">
+<tr>
+<td>&nbsp;1<br />&nbsp;2<br />&nbsp;3<br />&nbsp;4<br />&nbsp;5<br />&nbsp;6<br />&nbsp;7<br />&nbsp;8<br />&nbsp;9<br />&nbsp;10<br />&nbsp;11<br />&nbsp;12
+<br />&nbsp;13<br />&nbsp;14<br />&nbsp;15<br />&nbsp;16<br />&nbsp;17<br />&nbsp;18<br />&nbsp;19<br />&nbsp;20<br />&nbsp;21<br />
+&nbsp;22<br />&nbsp;23<br />&nbsp;24<br />&nbsp;25<br />&nbsp;26<br />&nbsp;27<br /></td>
+</tr>
+</table>
+     </td>
+     <td>
+    <pre class="examplecode smfont">
+<b>&lt;%@page contentType="text/html"%&gt;
+&lt;%@page pageEncoding="UTF-8"%&gt;</b>
+
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd"&gt;
+
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Hello&lt;/title&gt;&lt;/head&gt;
+&lt;body bgcolor="white"&gt;
+&lt;img src="duke.waving.gif"&gt; 
+&lt;h2&gt;Hello, my name is Duke. What's yours?&lt;/h2&gt;
+<b>&lt;form method="get"&gt;</b>
+&lt;input type="text" name="<b>username</b>" size="25"&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;input type="submit" value="Submit"&gt;
+&lt;input type="reset" value="Reset"&gt;
+&lt;/form&gt;
+<b>&lt;%
+   String name = request.getParameter("username");
+   if (name != null) {
+%&gt;
+       &lt;%@include file="response.jsp" %&gt;
+&lt;%
+   }
+%&gt;</b>
+&lt;/body&gt;
+&lt;/html&gt;
+    </pre>
+    </td></tr>
+    </table>
+    <p></p>
+	<p></p>
+	<ol>
+	   <li>(Lines 1-2) &nbsp; In these two lines we use the <tt>page directive</tt> of JSP. We will discuss this JSP element
+	   more in our lectures. Here we only need to know that we specify some <i>response header information</i> for the return page.
+	   <p></p>
+	   Regarding the response header, we need to connect it to a servlet where we also prepare for a response with this type
+	   of header information.
+	   </li>
+	   <p></p>
+       <li>(Line 12) &nbsp; Here we use the <tt>get</tt> method. Recall the properties we discussed before for the <tt>get</tt> method.
+	   Actually we should use <tt>post</tt> method here, because we submit an HTML form. Here I think the reason to use
+	   the <tt>get</tt> method is for learning purpose.
+	   <p></p>
+	   You may also notice that the <tt>&lt;form&gt;</tt> tag here does not have the <tt>action</tt> attribute, which usually is
+	   used to specify the backend data processing file. If this <tt>action</tt> attribute is missing, then the current file
+	   (here <tt>index.jsp</tt>) is the data processing file for this HTML form.
+	   </li>
+	   <p></p>
+	   <li>(Lines 18-25) &nbsp; This block of code is the embedded Java code for the dynamic feature. We call it <i>JSP scriptlet</i>.
+	   The JSP scriptlet has many properties, and we will discuss them in our lectures.
+	   </li>
+	   <p></p>
+	   <li>(Line 19) &nbsp; The <tt>request</tt> here is a JSP <i>implicit object</i> (also called <i>implicit variable</i>).
+	   It is created by the server, and you just use it directly. Here we use it to retrieve the parameter value for 
+	   <tt>username</tt>.</li>
+	   <p></p>
+	   <li>(Line 20) &nbsp; In Java, when you use an object, make sure that you check if it is <tt>null</tt>. If you forget
+	   this step, you may get a runtime error. (Think about when the object <tt>name</tt> takes the <tt>null</tt> value.)</li>
+	   <p></p>
+	   <li>(Line 22) &nbsp; Here we use the JSP <tt>include directive</tt>. We will include the result produced by the 
+	   <tt>response.jsp</tt> page right at this line.</li>
+	   <p></p>
+	</ol>
+	<p></p>
+	<p></p>
+	<b>2.2. Understand the code</b> <tt>response.jsp</tt>
+    <p></p>
+	<p></p>
+	This file is very simple. It only contains one line, which provides part of the content for another JSP page.
+	<p></p>
+	<p></p>
+    <code><b>Code Listing:</b> response.jsp</code>
+	<table width="900">
+      <tr><td>
+<table width="6" class="baseFont0 upper1">
+<tr><td>&nbsp;1<br /></td></tr>
+</table>
+     </td>
+     <td>
+    <pre class="examplecode smfont">
+&lt;h2&gt;&lt;font color="black"&gt;Hello, <b>&lt;%= request.getParameter("username") %&gt;</b>!&lt;/font&gt;&lt;/h2&gt;
+    </pre>
+    </td></tr>
+    </table>
+	<p></p>
+	<p></p>
+	<ol>
+	   <li>(Line 1) &nbsp; Here we use the <i>implicit object</i> <tt>request</tt> again. We also use another JSP element 
+	   called <i>JSP expression</i> denoted by <tt>&lt;%= ... %&gt;</tt>. We will learn many properties for the <i>JSP expressions</i> 
+	   in our lectures.
+	   <p></p>
+	</ol>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<center><span style="color: #D20106;">==========The End==========</span></center>
+  </div>
+</body>
+</html>

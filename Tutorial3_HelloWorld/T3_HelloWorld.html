@@ -1,0 +1,368 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>CS4010 Fall 2019: Tutorial 3. First Java Web Application: HelloWorld</title>
+<style type="text/css">
+body {
+   color: #333333; 
+   margin: 0 auto;
+   font-size: 1em;
+   font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+   text-align: center;
+}
+h1 {
+   font-size: 1.6em;
+   color: #333;
+   font-weight : normal;
+   padding:10px;
+   margin: 20px 10px 10px 0px;
+   text-align:center;
+}
+h2 {
+   font-size: 1.3em;
+   color: black;  
+   font-weight : normal; 
+   padding:5px 0px 2px 0px;
+   margin:0px 0px 5px 0px;
+   border-bottom:1px solid #D1d1d1; 
+   text-align:left;
+}
+.baseFont { 
+   font-size: 1.1em;
+   font-family: helvetica, arial, sans-serif; 
+}
+.linegap1 {
+   line-height: 160%
+}
+.indent {
+   position: relative;
+   left: 1em;
+   width: 45em;
+}
+.inframe { 
+   border: 2px solid;
+   position:relative;
+   margin: 0 auto;
+   top: 5px;
+   color: black;
+   border-color: #00BFFF;
+   width: 50em;
+   display: block; 
+   padding: 1.5em;
+   text-align: left;
+   background-color: #FFF; 
+}
+pre {
+   background-color:#FFF8E4;
+   padding:10px;
+   font-size: 1.3em;
+   _font-size: 1.2em;
+}
+pre,samp,code,tt {
+   font-family: "Courier New", monospace;
+   font-size:1.1em;
+   color:black;
+}
+.examplecode  {
+   background-color:#FFF8E4;
+   overflow:auto;
+   width:95%;
+}
+</style>
+</head>
+<body>
+  <div class="inframe baseFont linegap1">
+    <h1>Tutorial 3. First Java Web Application: HelloWorld</h1>
+    <center>by Dr. Wenjie He</center>
+    <p></p>
+    <p></p>
+    <b>Overview</b>
+    <p></p>
+    <p></p>
+    This is our first example as a Java web application. In this example, we will learn the basic structure 
+	of a Java web application. We will use the <i>Eclipse for Java EE</i> to build this project, which contains
+	a Java servlet and a simple HTML file as the welcome page.
+	<p></p>
+	<b>Goal:</b> Help beginners to get familiar with the Eclipse development environment.
+    <p></p>
+    <p></p>
+    <h2>Using Eclipse for Java EE to Develop Web Application</h2>
+    <p></p>
+    <p></p>
+	We will create two source files during our work. But the resulting source files are also provided (in the ZIP file) 
+	for reference purpose.
+	<p></p>
+    <p></p>
+    <ol>
+         <li>Start Eclipse for Java EE.</li>
+		 <p></p>
+		 Next we create a <i>Dynamic Web Project</i>.
+	     <p></p>
+         <p></p>
+         <li>In the Eclipse IDE, do the following steps:</li>
+		 <p></p>
+		 &nbsp; &nbsp; <b>File</b> &nbsp; &rArr; &nbsp; <b>New</b> &nbsp; &rArr; &nbsp; <b>Dynamic Web Project</b> &nbsp; &rArr; &nbsp; 
+		 <p></p>
+		 <p></p>
+		 <img src="images/dynamic.png" alt="Dynamic Web Project" />
+         <p></p>
+         <p></p>
+		 <li>Type the project name: <tt>HelloWorld</tt> and make sure that Tomcat is selected as your <i>Target Runtime</i>.
+         </li>
+		 <p></p>
+		 <p></p>
+		 <img src="images/ProjectName.png" alt="Project Name" />
+		 <p></p>
+		 <p></p>
+		 Then click the <b>Next</b> button.
+		 <p></p>
+		 <p></p>
+		 <img src="images/skipwin.png" alt="Accept Default" />
+		 <p></p>
+		 <p></p>
+		 Accept the default setting and click the <b>Next</b> button.
+		 <p></p>
+		 <p></p>
+		 <li>Generate the <i>Deployment Description</i> file for later configuration.
+         </li>
+		 <p></p>
+		 <p></p>
+		 <img src="images/webxml0.png" alt="First DD" />
+		 <p></p>
+		 <p></p>
+		 In the current window, by default, the <i>Deployment Description</i> checkbox is not selected. We need this file
+		 to configure our <i>welcome file</i>. Check the checkbox.
+		 <p></p>
+		 <p></p>
+		 <img src="images/webxml1.png" alt="2nd DD" />
+		 <p></p>
+		 <p></p>
+		 Click the <b>Finish</b> button.
+		 <p></p>
+		 <p></p>
+	     <li>A <i>Dynamic Web Project</i> is created in the Eclipse.
+         </li>
+		 <p></p>
+		 <p></p>
+		 <img src="images/emptyproj.png" alt="Project Structure" />
+		 <p></p>
+		 <p></p>
+		 Expand the <b>Java Resources</b> node, the <b>src</b> node will hold all our Java source files.
+		 <p></p>
+		 <p></p>
+		 <img src="images/expandsrc.png" alt="src node" />
+		 <p></p>
+		 <p></p>
+		  Expand the <b>WebContent</b> node. This node will contain all our web resource files.
+		 <p></p>
+		 <p></p>
+		 <img src="images/webcontnode.png" alt="WebContent" />
+		 <p></p>
+		 <p></p>
+		 <li>Create the servlet: <tt>HelloServlet.java</tt>
+         </li>
+		 <p></p>
+		 <p></p>
+		 Create a Java package to hold the servlet first.
+		 <p></p>
+		 <p></p>
+		 &nbsp; &nbsp; Right-click the <b>src</b> node &nbsp; &rArr; &nbsp; <b>New</b> &nbsp; &rArr; &nbsp; <b>Package</b> &nbsp; &rArr; &nbsp; 
+		 <p></p>
+		 <img src="images/package.png" alt="Package" />
+		 <p></p>
+		 <p></p>
+		 Type the package name: <tt>edu.umsl.java.servlet</tt> in the <b>Name</b> field.
+		 <p></p>
+		 <p></p>
+		 <img src="images/packagename.png" alt="Package Name" />
+		 <p></p>
+		 <p></p>
+		 Click the <b>Finish</b> button, and the package is created.
+		 <p></p>
+		 <p></p>
+		 <img src="images/createpackage.png" alt="Package Created" />
+		 <p></p>
+		 <p></p>
+		 Now we can create the servlet in this package.
+		 <p></p>
+		 <p></p>
+		 &nbsp; &nbsp; Right-click the <tt>edu.umsl.java.servlet</tt> node &nbsp; &rArr; &nbsp; <b>New</b> &nbsp; &rArr; &nbsp; <b>Servlet</b> &nbsp; &rArr; &nbsp; 
+		 <p></p>
+		 <p></p>
+		 <img src="images/newservlet.png" alt="New Servlet" />
+		 <p></p>
+		 <p></p>
+		 Type the servlet name <tt>HelloServlet</tt> in the <b>Class name</b> field.
+		 <p></p>
+		 <p></p>
+		 <img src="images/servletname.png" alt="Servlet Name" />
+		 <p></p>
+		 <p></p>
+		 Click the <b>Next</b> button.
+		 <p></p>
+		 <p></p>
+		 <img src="images/URLmapping.png" alt="URL mappings" />
+		 <p></p>
+		 <p></p>
+		 In this window, we have a chance to change the <tt>url-pattern</tt> of the servlet. The URL pattern of a servlet
+		 is a logical name of the servlet, which we will use to access the servlet. In this tutorial, we have no reason to
+		 change the default <tt>url-pattern</tt> (in the red circle), thus we click the <b>Next</b> button.
+		 <p></p>
+		 <p></p>
+		 <img src="images/servletmethods.png" alt="Servlet Methods" />
+		 <p></p>
+		 <p></p>
+		 In this window, we have a chance to select appropriate methods for this servlet. We just click the <b>Finish</b>
+		 button to generate the servlet class.
+		 <p></p>
+		 <p></p>
+		 <img src="images/genservlet.png" alt="Generate Servlet" />
+		 <p></p>
+		 <p></p>
+		 <li>Overwrite the <tt>doGet</tt> method to implement the business logic
+         </li>
+		 <p></p>
+		 <p></p>
+		 Comment out Line 30 and add the following lines in the <tt>doGet</tt> method:
+		 <p></p>
+		 <p></p>
+<pre class="examplecode">
+response.setContentType("text/html");
+PrintWriter out = response.getWriter();
+
+out.println("Hello World!");
+		 
+out.flush();
+out.close();
+</pre>
+		 <p></p>
+		 <p></p>
+		 You will see a red-cross sign at the line that contains the class <tt>PrintWriter</tt>. This means that the 
+		 package that contains this class has not been imported.<p></p> 
+		 To import the package, click the red-cross sign, a window pops up. When you see the line that contains 
+		 <tt>java.io</tt>, hit the <b>Enter</b> button. The package will be imported, and the red-cross sign will be gone.
+		 You will see the servlet class as follows,
+		 <p></p>
+		 <p></p>
+		 <img src="images/newlines.png" alt="New Lines" />
+		 <p></p>
+		 <p></p>
+		 The main code is in the circle.
+		 <p></p>
+		 <p></p>
+		 <li>Create a welcome file: <tt>index.html</tt></li>
+		 <p></p>
+		 <p></p>
+		 Now the servlet is done. But how do we call the servlet? We will create a simple HTML file called <tt>index.html</tt>,
+		 in which we put a hyperlink that connects the servlet through its URL pattern.
+		 <p></p>
+		 <p></p>
+		 Note that the node <b>WebContent</b> is the root node of our web application, we will put <tt>index.html</tt> under
+		 this node directly. To do that,
+		 <p></p>
+		 <p></p>
+		 &nbsp; &nbsp; Right-click the <b>WebContent</b> node &nbsp; &rArr; &nbsp; <b>New</b> &nbsp; &rArr; &nbsp; <b>HTML file</b> &nbsp; &rArr; &nbsp; 
+		 <p></p>
+		 <p></p>
+		 <img src="images/newhtml.png" alt="New HTML" />
+		 <p></p>
+		 <p></p>
+		 Enter the filename <tt>index.html</tt> in the <b>File name</b> field, then click the <b>Finish</b> button.
+		 The file is created in the <b>Editor Pane</b>.
+		 <p></p>
+		 <p></p>
+		 <img src="images/htmleditor.png" alt="HTML edit" />
+		 <p></p>
+		 <p></p>
+		 Now we make some changes. First we change the title to <tt>Hello World</tt>. Then we add a hyperlink in the 
+		 <tt>&lt;body&gt;</tt> element as follows,
+		 <p></p>
+		 <p></p>
+<pre class="examplecode">
+&lt;a href="HelloServlet"&gt;Hello World&lt;/a&gt;
+</pre>
+		 <p></p>
+		 <p></p>
+		 <img src="images/htmllines.png" alt="HTML lines" />
+		 <p></p>
+		 <p></p>
+		 If you want to format the file, you can do the following steps:
+		 <p></p>
+		 <p></p>
+		 &nbsp; &nbsp; Right-click anywhere in the file &nbsp; &rArr; &nbsp; <b>Source</b> &nbsp; &rArr; &nbsp; <b>Format</b> &nbsp; &rArr; &nbsp; 
+		 <p></p>
+		 <p></p>
+		 <img src="images/htmlformat.png" alt="HTML format" />
+		 <p></p>
+		 <p></p>
+		 <b>Q:</b> Since the URL pattern for the servlet is <tt>/HelloServlet</tt> (note the slash), why when we use it as the
+		 value of the <tt>href</tt> attribute, the slash is gone?
+		 <p></p>
+		 <p></p>
+		 <li>View the deployment descriptor: <tt>web.xml</tt></li>
+		 <p></p>
+		 <p></p>
+		 Expand the <tt>WEB-INF</tt> node, you will see the node <tt>web.xml</tt>.
+		 <p></p>
+		 <p></p>
+		 <img src="images/webxmlnode.png" alt="Node web.xml" />
+		 <p></p>
+		 <p></p>
+		 You can view the content of <tt>web.xml</tt> by double-clicking it, and then click the <tt>Source</tt> tab if
+		 it is under the <tt>Design</tt> tab.
+		 <p></p>
+		 <p></p>
+		 <img src="images/webxmlcont.png" alt="web.xml content" />
+		 <p></p>
+		 <p></p>
+		 The welcome file <tt>index.html</tt> is in the list. So this file will be called when the web application gets 
+		 started. 
+		 <p></p>
+		 <p></p>
+	     <li>Now we can start the project:
+	     </li>
+		 <p></p>
+		 <p></p>
+		 &nbsp; &nbsp; Rifgt-click the <i>HelloWorld</i> node &nbsp; &rArr; &nbsp; <b>Run As</b> &nbsp; &rArr; &nbsp; <b>Run on Server</b> &nbsp; &rArr; &nbsp; 
+		 <p></p>
+		 <p></p>
+		 <img src="images/run1.png" alt="Run on Server 1" />
+		 <p></p>
+		 <p></p>
+		 If this is the first time you use this Eclipse, you can click <b>Finish</b> directly, because you do not have any other
+		 projects in this Eclipse. If you already have some projects in the Eclipse, you click the <b>Next</b> button, 
+		 <p></p>
+		 <p></p>
+		 <img src="images/run2.png" alt="Run on Server 2" />
+		 <p></p>
+		 <p></p>
+		 and click the <b>Remove All</b> button to only leave the current project in the right column. Then click the
+		 <b>Finish</b> button. If a window pops up to ask you for permission, you click the <b>Allow Access</b> button.
+		 <p></p>
+		 <p></p>
+	     You will see the first page of the project displayed in the internal web browser of Eclipse:
+		 <p></p>
+		 <p></p>
+		 <img src="images/start.png" alt="Start page" />
+		 <p></p>
+		 <p></p>
+		 Click the hyperlink, you will see
+		 <p></p>
+		 <p></p>
+		 <img src="images/hello.png" alt="Hello" />
+		 <p></p>
+		 <p></p>
+    </ul>
+	Explanation of the code will be given in another tutorial. 
+    <p></p>
+    <p></p>
+    <p></p>
+	<p></p>
+    <p></p>
+	<center><span style="color: #D20106;">==========The End==========</span></center>
+  </div>
+</body>
+</html>

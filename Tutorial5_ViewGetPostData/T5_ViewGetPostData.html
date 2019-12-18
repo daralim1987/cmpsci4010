@@ -1,0 +1,423 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>CS4010 Fall 2019: Tutorial 5. View Get Post Data</title>
+<style type="text/css">
+body {
+   color: #333333; 
+   margin: 0 auto;
+   font-size: 1em;
+   font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+   text-align: center;
+}
+h1 {
+   font-size: 1.6em;
+   color: #333;
+   font-weight : normal;
+   padding:10px;
+   margin: 20px 10px 10px 0px;
+   text-align:center;
+}
+h2 {
+   font-size: 1.3em;
+   color: black;  
+   font-weight : normal; 
+   padding:5px 0px 2px 0px;
+   margin:0px 0px 5px 0px;
+   border-bottom:1px solid #D1d1d1; 
+   text-align:left;
+}
+.baseFont { 
+   font-size: 1.1em;
+   font-family: helvetica, arial, sans-serif; 
+}
+.linegap1 {
+   line-height: 160%
+}
+.indent {
+   position: relative;
+   left: 1em;
+   width: 45em;
+}
+.inframe { 
+   border: 2px solid;
+   position:relative;
+   margin: 0 auto;
+   top: 5px;
+   color: black;
+   border-color: #00BFFF;
+   width: 50em;
+   display: block; 
+   padding: 1.5em;
+   text-align: left;
+   background-color: #FFF; 
+}
+pre {
+   background-color:#FFF8E4;
+   padding:10px;
+   font-size: 1.3em;
+   _font-size: 1.2em;
+}
+pre,samp,code,tt {
+   font-family: "Courier New", monospace;
+   font-size:1.1em;
+   color:black;
+}
+.examplecode  {
+   background-color:#FFF8E4;
+   overflow:auto;
+   width:97%;
+}
+.upper {
+    position: relative;
+    top: -1em;
+}
+.upper1 {
+    position: relative;
+    top: -0.8em;
+}
+</style>
+</head>
+<body>
+  <div class="inframe baseFont linegap1">
+    <h1>Tutorial 5. View Get Post Data</h1>
+    <center>by Dr. Wenjie He</center>
+    <p></p>
+    <p></p>
+    <b>1. Run the example</b>
+    <p></p>
+    <p></p>
+    In this tutorial, we will compare the data sent using the HTTP GET and POST methods. The goal is to help us understand
+	the HTTP protocol better.
+	<p></p>
+    <p></p>
+	You can find the source code of this example in the folder <tt>Tutorial5_ViewGetPostData/Code</tt>. In this folder, there are
+	two sub-folders: <tt>src</tt> and <tt>WebContent</tt>. The <tt>src</tt> folder contains the Java source files, and 
+	<tt>WebContent</tt> contains other files for the web application.
+	<p></p>
+	The procedure to run the example is similar to that of our tutorial 4 (<tt>Tutorial4_ViewRequestBody</tt>).
+	<p></p>
+	We start the project and enter the data as follows,
+	<p></p>
+    <p></p>
+	<img src="images/input.png" alt="Input" />
+	<p></p>
+    <p></p>
+    <b>2. Understand the code</b>
+    <p></p>
+    <p></p>
+	In this example, there are three files: <tt>input.html, web.xml</tt>, and <tt>ViewGetPostData.java</tt>. Since the 
+	configuration file <tt>web.xml</tt> is very simple and easy to understand, we will look at the other two files.
+    <p></p>
+    <p></p>
+	<b>2.1. Understand the code</b> <tt>input.html</tt>
+    <p></p>
+	<p></p>
+	This file is the welcome file of this web application. It is also used to get the user's input. The user's input data
+	will be sent to the servlet for processing.
+	<p></p>
+    <code><b>Code Listing:</b> input.html</code>
+	<table width="900">
+      <tr><td>
+<table width="6" class="baseFont0 upper1">
+<tr>
+<td>&nbsp;1<br />&nbsp;2<br />&nbsp;3<br />&nbsp;4<br />&nbsp;5<br />&nbsp;6<br />&nbsp;7<br />&nbsp;8<br />&nbsp;9<br />&nbsp;10<br />&nbsp;11<br />&nbsp;12
+<br />&nbsp;13<br />&nbsp;14<br />&nbsp;15<br /></td>
+</tr>
+</table>
+     </td>
+     <td>
+    <pre class="examplecode smfont">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="ISO-8859-1"&gt;
+&lt;title&gt;ViewGetPostData&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;form method="<b>get</b>" action="viewGetPost"&gt;
+	&lt;p&gt;Title: &lt;input type="text" name="title"&gt;&lt;/p&gt;
+	&lt;p&gt;Title2: &lt;input type="text" name="title"&gt;&lt;/p&gt;
+	&lt;p&gt;Content: &lt;input type="text" name="content"&gt;&lt;/p&gt;
+	&lt;input type="submit"&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+    </pre>
+    </td></tr>
+    </table>
+    <p></p>
+	<p></p>
+	The first time we use the GET method to send the data. After you click the <b>Submit Query</b> button, you will see
+	<p></p>
+    <p></p>
+	<img src="images/viewdata.png" alt="View Data" />
+	<p></p>
+    <p></p>
+	You can see that the data is appended the URL line, because the data is sent through the request line.
+	<p></p>
+    <p></p>
+	Then we will use the POST method to send the data. We modify the file by changing the GET method to the POST method.
+	<p></p>
+    <code><b>Code Listing:</b> input.html</code>
+	<table width="900">
+      <tr><td>
+<table width="6" class="baseFont0 upper1">
+<tr>
+<td>&nbsp;1<br />&nbsp;2<br />&nbsp;3<br />&nbsp;4<br />&nbsp;5<br />&nbsp;6<br />&nbsp;7<br />&nbsp;8<br />&nbsp;9<br />&nbsp;10<br />&nbsp;11<br />&nbsp;12
+<br />&nbsp;13<br />&nbsp;14<br />&nbsp;15<br /></td>
+</tr>
+</table>
+     </td>
+     <td>
+    <pre class="examplecode smfont">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="ISO-8859-1"&gt;
+&lt;title&gt;ViewGetPostData&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;form method="<b>post</b>" action="viewGetPost"&gt;
+	&lt;p&gt;Title: &lt;input type="text" name="title"&gt;&lt;/p&gt;
+	&lt;p&gt;Title2: &lt;input type="text" name="title"&gt;&lt;/p&gt;
+	&lt;p&gt;Content: &lt;input type="text" name="content"&gt;&lt;/p&gt;
+	&lt;input type="submit"&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+    </pre>
+    </td></tr>
+    </table>
+	<p></p>
+	<p></p>
+	<img src="images/viewdata2.png" alt="View Data 2" />
+	<p></p>
+    <p></p>
+	This time you can see that no data is appended the URL line, because the data is sent through the message body.
+	<p></p>
+	<p></p>
+	<b>2.2. Understand the code</b> <tt>ViewGetPostServlet.java</tt>
+    <p></p>
+	<p></p>
+	This is a servlet that we use to process the HTML form submitted from the welcome page <tt>form.html</tt>.
+	<p></p>
+	<p></p>
+	<code><b>Code Listing:</b> ViewRequestServlet.java</code>
+	<table width="900">
+      <tr><td>
+<table width="6" class="baseFont0 upper1">
+<tr>
+<td>&nbsp;1<br />&nbsp;2<br />&nbsp;3<br />&nbsp;4<br />&nbsp;5<br />&nbsp;6<br />&nbsp;7<br />&nbsp;8<br />&nbsp;9<br />&nbsp;10<br />&nbsp;11<br />&nbsp;12
+<br />&nbsp;13<br />&nbsp;14<br />&nbsp;15<br />&nbsp;16<br /><br />&nbsp;17<br />&nbsp;18<br />&nbsp;19<br />&nbsp;20<br />
+&nbsp;21<br />&nbsp;22<br />&nbsp;23<br />&nbsp;24<br />&nbsp;25<br />&nbsp;26<br />
+&nbsp;27<br />&nbsp;28<br />&nbsp;29<br />&nbsp;30<br />&nbsp;31<br />&nbsp;32<br />
+&nbsp;33<br />&nbsp;34<br />&nbsp;35<br />&nbsp;36<br />&nbsp;37<br /><br />&nbsp;38<br />
+&nbsp;39<br />&nbsp;40<br />&nbsp;41<br />&nbsp;42<br /></td>
+</tr>
+</table>
+     </td>
+     <td>
+    <pre class="examplecode smfont">
+package edu.umsl.java.web;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/viewGetPost")
+public class ViewGetPostServlet extends HttpServlet {
+  private static final long serialVersionUID = 1L;
+
+  protected void doGet(HttpServletRequest request, 
+      HttpServletResponse response)
+      throws ServletException, IOException {
+    response.setContentType("text/html");
+    PrintWriter out = response.getWriter();
+
+    <b>String title = request.getParameter("title");</b>
+    String cont = request.getParameter("content");
+
+    out.println("Title: " + title + "&lt;br /&gt;");
+    out.println("Content: " + cont + "&lt;br /&gt;");
+		
+    <b>String[] titleArr = request.getParameterValues("title");</b>
+		
+    for (int i = 0; i &lt; titleArr.length; i++) {
+      out.println("Title[" + (i + 1) + "]: " + titleArr[i] + "&lt;br /&gt;");
+    }
+
+    out.flush();
+    out.close();
+  }
+
+  protected void doPost(HttpServletRequest request, 
+      HttpServletResponse response)
+      throws ServletException, IOException {
+    <b>doGet(request, response);</b>
+  }
+
+}
+    </pre>
+    </td></tr>
+    </table>
+    <p></p>
+	<p></p>
+	<ol>
+	   <li>(Line 21) &nbsp; To get the value of a parameter, we use the <tt>getParameter</tt> of
+	   the <tt>HttpServletRequest</tt> object <tt>request</tt>. This method returns a <tt>String</tt> object. Since all
+	   the data from an HTML page is in string format, you get it as a string first, then you can convert it to some suitable
+	   data type if necessary. 
+	   </li>
+	   <p></p>
+       <li>(Line 21) &nbsp; There are two values for the parameter <tt>title</tt>. But when you use the <tt>getParameter</tt>
+	   method, only the first value under the name <tt>title</tt> is retrieved.</li>
+	   <p></p>
+	   <li>(Line 27) &nbsp; In order to retrieve all the values for the <tt>title</tt>, we need to use the 
+	   <tt>getParameterValues</tt> method, which returns a string array. </li>
+	   <p></p>
+	   <li>(Lines 29-31) &nbsp; We display all the values for the parameter <tt>title</tt> using a for-loop.</li>
+	   <p></p>
+	   <li>(Line 39) &nbsp; In the <tt>doPost</tt> method, we simply repeat the logic in the <tt>doGet</tt> method. </li>
+	   <p></p>
+	</ol>
+	<p></p>
+	<p></p>
+	<b>2.3. Sending data through the request line using POST method</b>
+    <p></p>
+	<p></p>
+	We know when we send data using an HTML form, the data in the form fields is placed in the message body of the HTTP
+	request. The question is: Can we still send the data through the request line when we use the POST method?
+	<p></p>
+	<p></p>
+	Let us modify the code to see if it is possible.
+	<p></p>
+	<p></p>
+    <code><b>Code Listing:</b> input.html</code>
+	<table width="900">
+      <tr><td>
+<table width="6" class="baseFont0 upper1">
+<tr>
+<td>&nbsp;1<br />&nbsp;2<br />&nbsp;3<br />&nbsp;4<br />&nbsp;5<br />&nbsp;6<br />&nbsp;7<br />&nbsp;8<br />&nbsp;9<br />&nbsp;10<br />&nbsp;11<br />&nbsp;12
+<br />&nbsp;13<br />&nbsp;14<br />&nbsp;15<br /></td>
+</tr>
+</table>
+     </td>
+     <td>
+    <pre class="examplecode smfont">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset="ISO-8859-1"&gt;
+&lt;title&gt;ViewGetPostData&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;form method="<b>post</b>" action="<b>viewGetPost?pg=2</b>"&gt;
+	&lt;p&gt;Title: &lt;input type="text" name="title"&gt;&lt;/p&gt;
+	&lt;p&gt;Title2: &lt;input type="text" name="title"&gt;&lt;/p&gt;
+	&lt;p&gt;Content: &lt;input type="text" name="content"&gt;&lt;/p&gt;
+	&lt;input type="submit"&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+    </pre>
+    </td></tr>
+    </table>
+	<p></p>
+	Here we add a query parameter <tt>pg=2</tt> after the servlet URL <tt>viewGetPost</tt> to see if this parameter can
+	appear in the request line. 
+	<p></p>
+	To display the new parameter value in the servlet, we add a few lines in the servlet as follows,
+	<p></p>
+	<code><b>Code Listing:</b> ViewRequestServlet.java</code>
+	<table width="900">
+      <tr><td>
+<table width="6" class="baseFont0 upper1">
+<tr>
+<td>&nbsp;1<br />&nbsp;2<br />&nbsp;3<br />&nbsp;4<br />&nbsp;5<br />&nbsp;6<br />&nbsp;7<br />&nbsp;8<br />&nbsp;9<br />&nbsp;10<br />&nbsp;11<br />&nbsp;12
+<br />&nbsp;13<br />&nbsp;14<br />&nbsp;15<br />&nbsp;16<br /><br />&nbsp;17<br />&nbsp;18<br />&nbsp;19<br />&nbsp;20<br />
+&nbsp;21<br />&nbsp;22<br />&nbsp;23<br />&nbsp;24<br />&nbsp;25<br />&nbsp;26<br />
+&nbsp;27<br />&nbsp;28<br />&nbsp;29<br />&nbsp;30<br />&nbsp;31<br />&nbsp;32<br />
+&nbsp;33<br />&nbsp;34<br />&nbsp;35<br />&nbsp;36<br />&nbsp;37<br /><br />&nbsp;38<br />
+&nbsp;39<br />&nbsp;40<br />&nbsp;41<br />&nbsp;42<br />&nbsp;43<br />&nbsp;44<br /></td>
+</tr>
+</table>
+     </td>
+     <td>
+    <pre class="examplecode smfont">
+package edu.umsl.java.web;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/viewGetPost")
+public class ViewGetPostServlet extends HttpServlet {
+  private static final long serialVersionUID = 1L;
+
+  protected void doGet(HttpServletRequest request, 
+      HttpServletResponse response)
+      throws ServletException, IOException {
+    response.setContentType("text/html");
+    PrintWriter out = response.getWriter();
+
+    String title = request.getParameter("title");
+    String cont = request.getParameter("content");
+    <b>String pg = request.getParameter("pg");</b>
+
+    out.println("Title: " + title + "&lt;br /&gt;");
+    out.println("Content: " + cont + "&lt;br /&gt;");
+    <b>out.println("Page: " + pg + "&lt;br /&gt;");</b>
+		
+    String[] titleArr = request.getParameterValues("title");
+		
+    for (int i = 0; i &lt; titleArr.length; i++) {
+      out.println("Title[" + (i + 1) + "]: " + titleArr[i] + "&lt;br /&gt;");
+    }
+
+    out.flush();
+    out.close();
+  }
+
+  protected void doPost(HttpServletRequest request, 
+      HttpServletResponse response)
+      throws ServletException, IOException {
+    doGet(request, response);
+  }
+
+}
+    </pre>
+    </td></tr>
+    </table>
+	<p></p>
+	<p></p>
+	When we run the project, we will see
+	<p></p>
+	<p></p>
+	<img src="images/viewdata3.png" alt="View Data 3" />
+	<p></p>
+    <p></p>
+	This means that we send the <tt>pg</tt> parameter to the servlet from the request line using the POST method.
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<p></p>
+	<center><span style="color: #D20106;">==========The End==========</span></center>
+  </div>
+</body>
+</html>

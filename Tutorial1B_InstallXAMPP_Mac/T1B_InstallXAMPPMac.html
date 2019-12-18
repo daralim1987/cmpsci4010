@@ -1,0 +1,266 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>CS4010 Fall 2019: Tutorial 1B. Installing XAMPP for Mac</title>
+<style type="text/css">
+body {
+   color: #333333; 
+   margin: 0 auto;
+   font-size: 1em;
+   font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+   text-align: center;
+}
+h1 {
+   font-size: 1.6em;
+   color: #333;
+   font-weight : normal;
+   padding:10px;
+   margin: 20px 10px 10px 0px;
+   text-align:center;
+}
+h2 {
+   font-size: 1.3em;
+   color: black;  
+   font-weight : normal; 
+   padding:5px 0px 2px 0px;
+   margin:0px 0px 5px 0px;
+   border-bottom:1px solid #D1d1d1; 
+   text-align:left;
+}
+.baseFont { 
+   font-size: 1.1em;
+   font-family: helvetica, arial, sans-serif; 
+}
+.linegap1 {
+   line-height: 160%
+}
+.inframe { 
+   border: 2px solid;
+   position:relative;
+   margin: 0 auto;
+   top: 5px;
+   color: black;
+   border-color: #00BFFF;
+   width: 50em;
+   display: block; 
+   padding: 1.5em;
+   text-align: left;
+   background-color: #FFF; 
+}
+pre {
+   background-color:#FFF8E4;
+   padding:10px;
+   font-size: 1.3em;
+   _font-size: 1.2em;
+}
+pre,samp,code,tt {
+   font-family: "Courier New", monospace;
+   font-size:1.1em;
+   color:black;
+}
+.examplecode  {
+   background-color:#FFF8E4;
+   overflow:auto;
+   width:95%;
+}
+</style>
+</head>
+<body>
+  <div class="inframe baseFont linegap1">
+    <h1>Tutorial 1B. Installing XAMPP for Mac</h1>
+    <center>by Dr. Wenjie He</center>
+    <p></p>
+    <p></p>
+    <b>0. Overview</b>
+    <p></p>
+    <p></p>
+    The XAMPP package contains several popular software packages for web development:
+    <p></p>
+    <ul><ol>
+         <li>Apache HTTP Web Server</li>
+         <p></p>
+         <li>MySQL Database Management System</li>
+         <p></p>
+         <li>PHP (a server side scripting language)</li>
+         <p></p>
+         <li>PHPMyAdmin (MySQL Web-based graphical interface)</li>
+         <p></p>
+         <li>Tomcat Java Web Server</li>
+    </ul></ol>
+    <p></p>
+    Here "<b>X</b>" stands for one of the three characers: <b>L</b> (for Linux),
+    <b>W</b> (for Windows), and <b>M</b> (for Mac).
+    <p></p>
+    <hr />
+    Although we can install each of the above 5 packages individually, it is a convenient way to install
+    them altogether in XAMPP, which can help us avoid a lot of configuration headache. Otherwise, you
+    need to configure Apache with PHP, PHP with MySQL, and PHPMyAdmin with MySQL that is error-prone.
+    <hr />
+    <p></p>
+    <p></p>
+    <b>1. Installing XAMPP</b>
+    <p></p>
+    <p></p>
+    First we need to select a right version to download. The current version XAMPP uses MariaDB instead of MySQL due to the fact that MySQL was 
+	acquired by Oracle. Although MariaDB is supposed to preserve all the features of MySQL, we will be patient until we have confidence on MariaDB.
+	For this class, we still choose an old version of XAMPP that contains MySQL.
+    <p></p>
+    <p></p>
+    <ul><ol>
+      <li> Go to the download page: 
+           <a href="https://xampp-for-mac-os-x.en.uptodown.com/mac/old">https://xampp-for-mac-os-x.en.uptodown.com/mac/old</a>.
+           I find this page for older versions of XAMPP that contains MySQL.
+	  <p></p>
+      <p></p>
+      <img src="images1/oldxampp0.png" alt="Old XAMPP" />
+	  <p></p>
+      <p></p>
+	  We choose the version <b>5.6.11</b>. Based on my experience, the version 5.6.15 has a very high failure rate. 
+	  <p></p>
+      <p></p>
+      </li>
+      <li> The installation file is <tt>xampp-for-mac-os-x-5-6-11-multi-mac.dmg</tt>. By default, this file is stored in your <b>Downloads</b> folder.
+      You have a quick way to access this file by clicking the arrow sign on the upper right corner of your browser.
+      <p></p>
+      <p></p>
+      <img src="images1/myxampp2.png" alt="myxampp2" />
+      <p></p>
+      <p></p>
+      After you select the installation file, you will see a small window that contains an XAMPP installer icon,
+      <p></p>
+      <p></p>
+      <img src="images1/myxampp1.png" alt="myxampp1" />
+      </li>
+      <p></p>
+      <p></p>
+      <li> Double-click the icon to start the installation. A warning window pops up.
+      </li>
+      <p></p>
+      <p></p>
+      <img src="images1/warning.png" alt="warning" />
+      <p></p>
+      <p></p>
+	  Click the <b>Open</b> button. You need to enter your password into the following small window,
+	  <p></p>
+      <p></p>
+      <img src="images1/password.png" alt="password" />
+      <p></p>
+      <p></p>
+	  After a few seconds, the setup window pops up,
+	  <p></p>
+      <p></p>
+      <img src="images1/setup.png" alt="setup" />
+      <p></p>
+      <p></p>
+      <li> Click the <b>Next</b> button, and accept the default setting in the following window,
+      </li>
+      <p></p>
+      <p></p>
+      <img src="images1/defaultsetting.png" alt="Default Setting" />
+      <p></p>
+      <p></p>
+      Click the <b>Next</b> button, you will see the installation directory for XAMPP,
+      <p></p>
+      <p></p>
+      <img src="images1/installdir.png" alt="Install Dir" />
+      <p></p>
+      <p></p>
+      Click the <b>Next</b> button, and uncheck the checkbox so as to avoid many annoying advertising messages,
+      <p></p>
+      <p></p>
+      <img src="images1/uncheckbox.png" alt="Uncheck checkbox" />
+      <p></p>
+      <p></p>
+      Click the <b>Next</b> button,
+      <p></p>
+      <p></p>
+      <img src="images1/ready.png" alt="Ready" />
+      <p></p>
+      <p></p>
+      Click the <b>Next</b> button, the installer starts running.
+      <p></p>
+      <p></p>
+      <img src="images1/installing.png" alt="Installing" />
+      <p></p>
+      <p></p>
+      <li> When the installation completes, you will see
+      </li>
+      <p></p>
+      <p></p>
+      <img src="images1/done.png" alt="done" />
+      <p></p>
+      <p></p>
+      You can decide if you want to start the <b>Application Manager</b> for XAMPP immediately or not (through the checkbox). If you start it, you can start the Apache HTTP server
+	  and MySQL database server from it.
+	  <p></p>
+      <p></p>
+      If we keep the checkbox checked, and click the <b>Finish</b> button, you will see the <b>Application Manager</b> window.
+      <p></p>
+      <p></p>
+      <img src="images1/manager.png" alt="manager" />
+      <p></p>
+      <p></p>
+      <li> If you close the <b>Application Manager</b> window, you can start it in this way:
+      <p></p>
+      <p></p>
+      &nbsp; &nbsp; <b>Applications</b> &nbsp; &rArr; &nbsp; <b>XAMPP</b> &nbsp; &rArr; &nbsp; click <b>manager-osx</b>
+      <p></p>
+      <p></p>
+      </li>
+      In the <b>Application Manager</b> window, click the <b>Manage Servers</b> tab,
+      <p></p>
+      <p></p>
+      <img src="images1/ManageServers.png" alt="Manage Servers" />
+      <p></p>
+      <p></p>
+      You can start the Apache server by clicking the corresponding <b>Start</b> button (if it has not been started). If you want to use MySQL, you can click the <b>Start</b>
+	  button for MySQL to start MySQL database server (after you start the Apache server in order to access MySQL from the <tt>phpMyAdmin</tt>).
+    </ol></ul>
+    <p></p>
+    <p></p>
+    <b>2. Testing Apache and phpMyAdmin for MySQL</b>
+    <p></p>
+    <p></p>
+	Make sure that you have started both Apache server and MySQL database server from your XAMPP Application Manager.
+	<p></p>
+    <p></p>
+    <img src="images1/bothservers.png" alt="Both Servers" />
+    <p></p>
+    <p></p>
+    <ul><ol>
+      <li> Open a web browser and type the URL: <tt>http://localhost</tt> (or just <tt>localhost</tt>). You would see the
+           page below,
+      </li>
+      <p></p>
+      <p></p>
+      <center><img src="images1/welcome.png" alt="Welcome" /></center>
+      <p></p>
+      <p></p>
+      This page tells you that your Apache is running successfully.
+      <p></p>
+      <li> In order to check if your MySQL is connected successfully, you need to type the URL: <tt>http://localhost/phpmyadmin</tt> manually,
+      because there is no suitable link for it on the page,
+	  <p></p>
+      <p></p>
+      <img src="images1/phpmyadmin.png" alt="phpMyAdmin" />
+      <p></p>
+      <p></p>
+	  You would see a page with all of your MySQL databases.
+	  <p></p>
+      <p></p>
+	  If you see the above page, you are ready to develop web applications by XAMPP.
+      </li>
+    </ul></ol>
+    <p></p>
+    <p></p>
+    <p></p>
+    <p></p>
+	<p></p>
+    <p></p>
+	<center><span style="color: #D20106;">==========The End==========</span></center>
+  </div>
+</body>
+</html>

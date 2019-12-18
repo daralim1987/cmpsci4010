@@ -1,0 +1,785 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>CS4010 Fall 2019: Tutorial 8 - Java Web Applications Using JavaBeans</title>
+<style type="text/css">
+body {
+   color: #333333; 
+   margin: 0 auto;
+   font-size: 1em;
+   font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+   text-align: center;
+}
+h1 {
+   font-size: 1.6em;
+   color: #333;
+   font-weight : normal;
+   padding:10px;
+   margin: 20px 10px 10px 0px;
+   text-align:center;
+}
+h2 {
+   font-size: 1.3em;
+   color: black;  
+   font-weight : normal; 
+   padding:5px 0px 2px 0px;
+   margin:0px 0px 5px 0px;
+   border-bottom:1px solid #D1d1d1; 
+   text-align:left;
+}
+.baseFont { 
+   font-size: 1.1em;
+   font-family: helvetica, arial, sans-serif; 
+}
+.inframe { 
+   border: 2px solid;
+   position:relative;
+   margin: 0 auto;
+   top: 5px;
+   color: black;
+   border-color: #00BFFF;
+   width: 52em;
+   display: block; 
+   padding: 1.5em;
+   text-align: left;
+   background-color: #FFF; 
+}
+.baseFont0 { 
+   font-size: 0.8em;
+   font-family: helvetica, arial, sans-serif; 
+}
+.linegap1 {
+    line-height: 150%
+}
+.smfont {
+   font-size: 0.95em;
+}
+.smfont1 {
+   font-size: 0.9em;
+}
+.indent {
+   position: relative;
+   left: 2em;
+}
+pre {
+   background-color:#FFF8E4;
+   padding:10px;
+   font-size: 1.3em;
+   _font-size: 1.2em;
+}
+pre,samp,code,tt {
+   font-family: "Courier New", monospace;
+   font-size:1.1em;
+   color:black;
+}
+.examplecode  {
+   background-color:#FFF8E4;
+   overflow:auto;
+   width:95%;
+}
+.tblthin {
+	border-collapse:collapse; 
+}
+.pad1 {
+	padding: 0.5em; 
+}
+.tbltd1 {
+   background-color:#F2F2F2;
+   padding:3px;
+   text-align: center;
+}
+.tblheader {
+   background-color:#CAD7F0;
+   color:#000000;
+   font-weight:bold;
+   padding:3px;
+}
+.align-right {
+   text-align: right;
+}  
+.align-center {
+   text-align: center;
+}
+.align-left {
+   text-align:left;
+}
+.upper {
+    position: relative;
+    top: -1.6em;
+}
+.upper1 {
+    position: relative;
+    top: -0.9em;
+}
+</style>
+</head>
+<body>
+  <div class="inframe baseFont linegap1">
+  <h1>Tutorial 8 - Java Web Applications Using JavaBeans</h1>
+    <center>by Dr. Wenjie He</center>
+    <p></p>
+    <p></p>
+    <p></p>
+	<b>1. Introduction to JavaBeans</b>
+    <p></p>
+    <p></p>
+	<div class="indent">
+	JavaBeans are Java software components used in Java software development.
+	<p></p>
+    <p></p>
+	<b>Properties of JavaBeans</b>
+	<p></p>
+    <p></p>
+	<ol>
+	    <li>The JavaBeans specification provides a list of naming rules, so that the
+		    components built following the rules <br />can be recognized by the tools implementing
+		    the specification.
+		</li>
+		<p></p>
+		<li>JavaBeans are Java classes that have <i>properties</i> (as <tt>private</tt> instance variables).
+		</li>
+		<p></p>
+		<li>The methods that change a property's value are called <i>setter</i> methods, and the
+		    methods that retrieve a property's value are called <i>getter</i> methods.
+		</li>
+		<p></p>
+		<li>JavaBeans must be serializable. 
+		</li>
+		<p></p>
+		<li>JavaBeans with setters are <i>mutable</i> objects; and JavaBeans without setters could be
+		    <i>immutable</i> objects.
+		</li>
+		<p></p>
+	</ol>
+	</div>
+	<p></p>
+    <p></p>
+	<div class="indent">
+	<b>Rules for JavaBeans</b>
+	<p></p>
+    <ol>
+	    <li>If the property is not a <tt>boolean</tt>, the getter method's prefix must be <tt>get</tt>.
+		</li>
+		<p></p>
+		<li>The name of the property is <i>inferred</i> from getters and setters, not through any
+		    variables in your class.
+		</li>
+		<p></p>
+		<li>If the property is a <tt>boolean</tt>, the getter method's prefix is either <tt>get</tt>
+		    or <tt>is</tt>.
+		</li>
+		<p></p>
+		<li>The setter method's prefix must be <tt>set</tt>.
+		</li>
+		<p></p>
+		<li><i>property name with its first letter to uppercase</i> = <i>getter/setter removing
+		    prefix</i> <tt>get, is</tt> <i>or</i> <tt>set</tt>
+		</li>
+		<p></p>
+		<li>The signature of a setter method: 
+		    <tt>public void set<i>PropertyName</i>(<i>PropertyName</i>) </tt>
+		</li>
+		<p></p>
+		<li>The signature of a getter method: 
+		    <tt>public <i>PropertyName</i> get<i>PropertyName</i>() </tt> or <br />
+	            <tt>public boolean is<i>PropertyName</i>()</tt>
+		</li>
+		<p></p>
+		<li>Listener method names used to add a listener must use the prefix <tt>add</tt>, followed by
+		    the listener type.
+		</li>
+		<p></p>
+		<li>Listener method names used to remove a listener must use the prefix <tt>remove</tt>, 
+		    followed by the listener type.
+		</li>
+		<p></p>
+		<li>The type of the listener to be added or removed must be passed as the argument to the 
+		    method.
+		</li>
+		<p></p>
+		<li>Listener method names must end with the word <tt>Listener</tt>.
+		</li>
+	</ol>
+	</div>
+	<p></p>
+    <p></p>
+    <b>2. Get the example</b>
+    <p></p>
+    <p></p>
+	The source code is included in <tt>Tutorial8_JavaBeans.zip</tt>.
+	<p></p>
+    <p></p>
+    <ol>
+      <li> Get the example in the folder: <tt>Tutorial8_JavaBeans\GuestBook</tt>.
+      </li>
+	  <p></p>
+      <li> Examine the files in this example:
+      </li>
+	  <table class="indent2b">
+      <tbody><tr><td height="30"><img src="images/circle.gif" alt="circle"></td>
+          <td>The database script: <tt>Tutorial8_JavaBeans\GuestBook\db\guestbookdb.sql</tt></td>
+      </tr>
+      <tr><td height="30"><img src="images/circle.gif" alt="circle"></td>
+          <td>Two JSP files: <tt>Tutorial8_JavaBeans\GuestBook\jsp\guestBookView.jsp, guestBookLogin.jsp</tt></td>
+      </tr>
+      <tr><td height="30"><img src="images/circle.gif" alt="circle"></td>
+          <td>Two JavaBeans: <tt>Tutorial8_JavaBeans\GuestBook\src\org\me\jsp\beans\GuestBean.java</tt>,</td>
+      </tr>
+      <tr><td>&nbsp;</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <tt>GuestDataBean.java</tt></td></tr>
+    </tbody></table>
+    </ol>
+    <p></p>
+    <p></p>
+    <b>3. Creating the database</b>
+    <p></p>
+    <p></p>
+    <ul><ol>
+      <li>Create the database <tt>guestbookdb</tt> using the script <tt>Tutorial8_JavaBeans\GuestBook\db\guestbookdb.sql</tt>.</li>
+    </ol></ul>
+    <p></p>
+    <b>4. Running the example</b>
+    <p></p>
+    <p></p>
+    <ul><ol>
+      <li>Create a <b>Dynamic Web Project</b> called <code>GuestBook</code> in the 
+          <b>Eclipse for Java EE</b>.</li>
+	  <p></p>
+	  <b>Note:</b> When you create the project, remember to generate the <tt>web.xml</tt>. We will use it to configure
+	  our welcome file.
+	  <p></p>
+      <li>Create a package called <code>org.me.jsp.beans</code>.
+      </li>
+	  <p></p>
+      <li>Copy the files <code>GuestBean.java</code> and <code>GuestDataBean.java</code> from
+	  the folder <code>GuestBook\src\org\me\jsp\beans</code>
+          to the package <code>org.me.jsp.beans</code> by drag-and-drop.
+      </li>
+	  <p></p>
+      <li>Copy the files <code>guestBookLogin.jsp</code> and <code>guestBookView.jsp</code> from
+	  the folder <code>GuestBook\jsp</code>
+          to the node <code>WebContent</code> under the project.
+      </li>
+	  <p></p>
+      <li>Expand the <code>WEB-INF</code> node under the node <code>WebContent</code>, and double-click
+	  <code>web.xml</code> to open it.
+      </li>
+	  <p></p>
+      <li>Add the file <code>guestBookLogin.jsp</code> to the list of your welcome files
+          by, for example, changing the following line 
+      </li>
+	  <p></p>
+      <pre class="examplecode">&lt;welcome-file&gt;index.jsp&lt;/welcome-file&gt;
+      </pre>
+	to
+      <pre class="examplecode">&lt;welcome-file&gt;<b>guestBookLogin.jsp</b>&lt;/welcome-file&gt;
+      </pre>
+      <li>Copy the MySQL driver's library file <code>Tutorial8_JavaBeans\GuestBook\lib\mysql-connector-java-5.1.7-bin.jar</code>
+	      into your <code>WebContent\WEB-INF\lib</code> node.
+      </li>
+      <p></p>
+      <p></p>
+	  <li>Run the project, you would see
+	  </li>
+	  <p></p>
+      <p></p>
+      <center><img src="images/guestbook0.gif" alt="Guestbook 0" border="1">
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <img src="images/guestbook1.gif" alt="Guestbook 1" border="1"></center>
+      <p></p>
+      <p></p>
+      After you enter the data for a guest and submit, you would see,
+      <p></p>
+      <p></p>
+      <center><img src="images/guestbook2.gif" alt="Guestbook 2"></center>
+      <p></p>
+      <p></p>
+    </ol></ul>
+    <p></p>
+	<p></p>
+	<b>5. Creating JavaBeans</b>
+    <p></p>
+    <p></p>
+    In this example, there are two JavaBeans: <code>GuestBean</code> for data storage and
+    <code>GuestDataBean</code> for data access.
+    <p></p>
+    Our data structure: <code>GuestBean</code>
+    <p></p>
+    <code><b>Code Listing:</b> GuestBean.java</code>
+    <pre class="examplecode">package org.me.jsp.beans;
+
+public class GuestBean {
+   private String firstName, lastName, email;
+
+   public void setFirstName( String name )
+   {
+      firstName = name;  
+   }
+   
+   public String getFirstName()
+   {
+      return firstName;  
+   }
+
+   public void setLastName( String name )
+   {
+      lastName = name;  
+   }
+
+   public String getLastName()
+   {
+      return lastName;  
+   }
+
+   public void setEmail( String address )
+   {
+      email = address;
+   }
+
+   public String getEmail()
+   {
+      return email;  
+   }
+}
+    </pre>
+    <p></p>
+    Our <i>Data Access Object</i> (DAO): <code>GuestDataBean</code>
+    <p></p>
+    <code><b>Code Listing:</b> GuestDataBean.java</code>
+	<table width="900">
+      <tr><td>
+<table width="6" class="baseFont0 upper1">
+<tr>
+<td>&nbsp;1<br />&nbsp;2<br />&nbsp;3<br />&nbsp;4<br />&nbsp;5<br />&nbsp;6<br />&nbsp;7<br />&nbsp;8<br />&nbsp;9<br />&nbsp;10<br />&nbsp;11<br />&nbsp;12
+<br />&nbsp;13<br />&nbsp;14<br />&nbsp;15<br />&nbsp;16<br />&nbsp;17<br />&nbsp;18<br />&nbsp;19<br />&nbsp;20<br />
+&nbsp;21<br />&nbsp;22<br />&nbsp;23<br />&nbsp;24<br />&nbsp;25<br />&nbsp;26<br />
+&nbsp;27<br />&nbsp;28<br />&nbsp;29<br />&nbsp;30<br />&nbsp;31<br />
+&nbsp;32<br />&nbsp;33<br />&nbsp;34<br />&nbsp;35<br />&nbsp;36<br />&nbsp;37<br />
+&nbsp;38<br />&nbsp;39<br />&nbsp;40<br />&nbsp;41<br />&nbsp;42<br />&nbsp;43<br />
+&nbsp;44<br />&nbsp;45<br />&nbsp;46<br />&nbsp;47<br />&nbsp;48<br />&nbsp;49<br />
+&nbsp;50<br />&nbsp;51<br />&nbsp;52<br />&nbsp;53<br />&nbsp;54<br />&nbsp;55<br />
+&nbsp;56<br />&nbsp;57<br />&nbsp;58<br />&nbsp;59<br />&nbsp;60<br />&nbsp;61<br />
+&nbsp;62<br />&nbsp;63<br />&nbsp;64<br />&nbsp;65<br />&nbsp;66<br />&nbsp;67<br />
+&nbsp;68<br />&nbsp;69<br />&nbsp;70<br />&nbsp;71<br />&nbsp;72<br />&nbsp;73<br />
+&nbsp;74<br />&nbsp;75<br />&nbsp;76<br />&nbsp;77<br />&nbsp;78<br />&nbsp;79<br /></td>
+</tr>
+</table>
+     </td>
+     <td>
+    <pre class="examplecode smfont">
+package org.me.jsp.beans;
+
+// Java core packages
+import java.sql.*;
+import java.util.*;
+import java.net.*;
+
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+public class GuestDataBean {
+   private Connection connection;
+   private PreparedStatement addRecord, getRecords;
+
+   // construct TitlesBean object
+   public GuestDataBean() throws Exception {
+
+      Class.forName("com.mysql.jdbc.Driver");
+      connection = DriverManager.getConnection(
+                     "jdbc:mysql://localhost:3306/guestbookdb",
+                     "root", "");
+
+      getRecords = connection.prepareStatement(
+                    "SELECT firstName, lastName, email FROM guests");
+
+      addRecord = connection.prepareStatement(
+                   "INSERT INTO guests ( " 
+                  + "firstName, lastName, email ) " 
+                  + "VALUES ( ?, ?, ? )");
+
+   }
+
+   // return an ArrayList of GuestBeans
+   public List&lt;GuestBean&gt; getGuestList() throws SQLException {
+      List&lt;GuestBean&gt; guestList = new ArrayList&lt;GuestBean&gt;();
+
+      // obtain list of titles
+      ResultSet results = getRecords.executeQuery();
+
+      // get row data
+      while (results.next()) {
+         GuestBean guest = new GuestBean();
+
+         guest.setFirstName(results.getString(1));
+         guest.setLastName(results.getString(2));
+         guest.setEmail(results.getString(3));
+
+         guestList.add(guest);
+      }
+
+      return guestList;
+   }
+
+   // insert a guest in guestbook database
+   public void addGuest(GuestBean guest) throws SQLException {
+      addRecord.setString(1, guest.getFirstName());
+      addRecord.setString(2, guest.getLastName());
+      addRecord.setString(3, guest.getEmail());
+
+      addRecord.executeUpdate();
+   }
+
+   // close statements and terminate database connection
+   protected void finalize() {
+      // attempt to close database connection
+      try {
+         getRecords.close();
+         addRecord.close();
+         connection.close();
+      }
+
+      // process SQLException on close operation
+      catch (SQLException sqlException) {
+         sqlException.printStackTrace();
+      }
+   }
+
+}
+    </pre>
+     </td></tr>
+    </table>
+	<p></p>
+	<p></p>
+    <ol>
+	   <li>(Lines 19-30) &nbsp; We put the database connection and query statement definitions inside the 
+	   constructor, so that when we destroy the object, we can release the recourse occupied by the connection
+	   and query objects. Later if we need to access the database again, we can create the database connection
+	   by calling the constructor.</li>
+	   <p></p>
+       <li>(Lines 35-36) &nbsp; Here we used the <i>Java Generic Types</i> in <code>List&lt;GuestBean&gt;</code>.
+	    The <i>Java Generic Types</i> were designed to reduce the bugs in your code.</li>
+	   <p></p>
+       <li>For the Java collection classes, such as <code>List, Map, Vector</code>, etc., they can hold
+	   any Java classes. This kind of flexibility may cause confusion sometimes. The Java generics
+	   add stability to your code by avoiding this kind of uncertainty.
+       </li>
+	   <p></p>
+       <li>The idea of the Java generics is to convert some Java runtime errors to compile time errors,
+	   so that it is much easier to detect those errors.
+       </li>
+    </ol>
+    <p></p>
+	<p></p>
+    <b>6 Using JavaBeans in JSPs</b>
+    <p></p>
+    <p></p>
+    In the <code>guestBookLogin.jsp</code>, we collect user entered data and store it
+    in a JavaBean. Then we called the data access JavaBean to write the data into the
+    database.
+    <p></p>
+    <code><b>Code Listing:</b> guestBookLogin.jsp</code>
+	<table width="900">
+      <tr><td>
+<table width="6" class="baseFont0 upper1">
+<tr>
+<td>&nbsp;1<br />&nbsp;2<br />&nbsp;3<br />&nbsp;4<br />&nbsp;5<br />&nbsp;6<br />&nbsp;7<br />&nbsp;8<br />&nbsp;9<br />&nbsp;10<br />&nbsp;11<br />&nbsp;12
+<br />&nbsp;13<br />&nbsp;14<br />&nbsp;15<br />&nbsp;16<br />&nbsp;17<br />&nbsp;18<br />&nbsp;19<br />&nbsp;20<br />
+&nbsp;21<br />&nbsp;22<br />&nbsp;23<br />&nbsp;24<br />&nbsp;25<br />&nbsp;26<br />
+&nbsp;27<br />&nbsp;28<br />&nbsp;29<br />&nbsp;30<br />&nbsp;31<br />
+&nbsp;32<br />&nbsp;33<br />&nbsp;34<br />&nbsp;35<br />&nbsp;36<br />&nbsp;37<br />
+&nbsp;38<br />&nbsp;39<br />&nbsp;40<br />&nbsp;41<br />&nbsp;42<br />&nbsp;43<br />
+&nbsp;44<br />&nbsp;45<br />&nbsp;46<br />&nbsp;47<br />&nbsp;48<br />&nbsp;49<br />
+&nbsp;50<br />&nbsp;51<br />&nbsp;52<br />&nbsp;53<br />&nbsp;54<br />&nbsp;55<br />
+&nbsp;56<br />&nbsp;57<br />&nbsp;58<br />&nbsp;59<br />&nbsp;60<br />&nbsp;61<br />
+&nbsp;62<br />&nbsp;63<br />&nbsp;64<br />&nbsp;65<br />&nbsp;66<br />&nbsp;67<br />
+&nbsp;68<br />&nbsp;69<br />&nbsp;70<br />&nbsp;71<br />&nbsp;72<br />&nbsp;73<br />
+&nbsp;74<br />&nbsp;75<br />&nbsp;76<br />&nbsp;77<br />&nbsp;78<br />&nbsp;79<br />
+&nbsp;80<br />&nbsp;81<br />&nbsp;82<br />&nbsp;83<br />&nbsp;84<br />&nbsp;85<br />
+&nbsp;86<br />&nbsp;87<br />&nbsp;88<br />&nbsp;89<br />&nbsp;90<br />&nbsp;91<br />
+&nbsp;92<br />&nbsp;93<br />&nbsp;94<br />&nbsp;95<br />&nbsp;96<br /></td>
+</tr>
+</table>
+     </td>
+     <td>
+    <pre class="examplecode smfont">
+&lt;?xml version = "1.0"?&gt;
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;
+
+&lt;%-- beans used in this JSP --%&gt;
+&lt;jsp:useBean id = "guest" scope = "page" 
+   class = "org.me.jsp.beans.GuestBean" /&gt;
+&lt;jsp:useBean id = "guestData" scope = "request" 
+   class = "org.me.jsp.beans.GuestDataBean" /&gt;
+
+&lt;html xmlns = "http://www.w3.org/1999/xhtml"&gt;
+
+&lt;head&gt;
+   &lt;title&gt;Guest Book Login&lt;/title&gt;
+
+   &lt;style type = "text/css"&gt;
+      body { 
+         font-family: tahoma, helvetica, arial, sans-serif;
+      }
+
+      table, tr, td { 
+         font-size: .9em;
+         border: 3px groove;
+         padding: 5px;
+         background-color: #dddddd;
+      }
+   &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+   &lt;jsp:setProperty name = "guest" property = "*" /&gt;
+
+   &lt;% // start scriptlet
+
+      if ( guest.getFirstName() == null || 
+           guest.getLastName() == null ||
+           guest.getEmail() == null ) {
+
+   %&gt; &lt;%-- end scriptlet to insert fixed template data --%&gt;
+
+         &lt;form method = "post" action = "guestBookLogin.jsp"&gt;
+            &lt;p&gt;Enter your first name, last name and email
+            address to register in our guest book.&lt;/p&gt;
+
+            &lt;table&gt;
+               &lt;tr&gt;
+                  &lt;td&gt;First name&lt;/td&gt;
+
+                  &lt;td&gt;
+                     &lt;input type = "text" name = "firstName" /&gt;
+                  &lt;/td&gt;
+               &lt;/tr&gt;
+
+               &lt;tr&gt;
+                  &lt;td&gt;Last name&lt;/td&gt;
+
+                  &lt;td&gt;
+                     &lt;input type = "text" name = "lastName" /&gt;
+                  &lt;/td&gt;
+               &lt;/tr&gt;
+
+               &lt;tr&gt;
+                  &lt;td&gt;Email&lt;/td&gt;
+
+                  &lt;td&gt;
+                     &lt;input type = "text" name = "email" /&gt;
+                  &lt;/td&gt;
+               &lt;/tr&gt;
+
+               &lt;tr&gt;
+                  &lt;td colspan = "2"&gt;
+                     &lt;input type = "submit" 
+                             value = "Submit" /&gt;
+                  &lt;/td&gt;
+               &lt;/tr&gt;
+            &lt;/table&gt;
+         &lt;/form&gt;
+
+   &lt;% // continue scriptlet
+
+      }  // end if
+      else {
+         guestData.addGuest( guest );
+
+   %&gt; &lt;%-- end scriptlet to insert jsp:forward action --%&gt;
+
+      &lt;%-- forward to display guest book contents --%&gt;
+      &lt;jsp:forward page = "guestBookView.jsp" /&gt;
+
+   &lt;% // continue scriptlet
+
+      }  // end else
+
+   %&gt; &lt;%-- end scriptlet --%&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+    </pre>
+     </td></tr>
+    </table>
+	<p></p>
+	<p></p>
+    <ul><ol>
+       <li>(Line 6) &nbsp; The <code>&lt;jsp:useBean&gt;</code> action is used to create a
+	    <code>GuestBean</code> instance.
+       </li>
+	   <p></p>
+       <li>(Line 6) &nbsp; The <code>scope</code> attribute tells us that this page has 
+	    <code>page</code> scope. It means that only this page can access the JavaBean
+	    of type <code>GuestBean</code> with reference <code>guest</code>.
+       </li>
+	   <p></p>
+       <li>(Lines 6-7) &nbsp; The Java implementation for these two lines is:
+       </li>
+       <pre class="examplecode">GuestBean guest = new GuestBean();
+       </pre>
+       The JSP container does this conversion.
+	   <p></p>
+       <li>(Line 8) &nbsp; A <code>GuestDataBean</code> instance is created with the <code>request</code>
+	    scope. A <code>request</code> may contain several pages within one request. In this example, the two
+		JSP pages are in the same request scope, because we use <tt>forward</tt> in the first JSP to go to
+        the	second JSP.	Similarly, we have
+       </li>
+       <pre class="examplecode">GuestDataBean guestData = new GuestDataBean();
+       </pre>
+       <li>(Line 31) &nbsp; The <code>&lt;jsp:setProperty&gt;</code> action sets the properties for
+	    the JavaBean <code>guest</code> of type <code>GuestBean</code>.
+       </li>
+	   <p></p>
+       <li>(Line 31) &nbsp; The <code>property="*"</code> means that all the properties of the 
+	   <code>guest</code> JavaBean have the same names as the corresponding <code>input</code> 
+           fields in the HTML form. 
+           <p></p>
+	       <p></p>
+           In other words, the form fields and the JavaBean properties have the same names.
+       </li>
+	   <p></p>
+       <li>(Line 31) &nbsp; If a property name of a JavaBean is different from the name of its
+	    corresponding input field, we need to set the property as follows,
+       </li>
+      <pre class="examplecode">&lt;jsp:setProperty name="guest" property="thisProperty" 
+       param="thatProperty" /&gt;
+      </pre>
+	   <li>(Line 83) &nbsp; When the bean instance <tt>guest</tt> carries the data (first name, last name, and email), 
+	   the DAO bean <tt>guestData</tt> is used and its data access method <tt>addGuest()</tt> is called to persist
+	   the data in <tt>guest</tt>.
+	   </li>
+	   <p></p>
+       <li>(Line 88) &nbsp; The <code>&lt;jsp:forward&gt;</code> action is used to forward the request
+	    to the next page <code>guestBeansView.jsp</code>, and <code>guestBeansView.jsp</code>
+	    still stays in the same request. Therefore, <code>guestBeansView.jsp</code> can
+	    access the <code>request</code> scope <code>GuestDataBean</code> instance 
+	    <code>guestData</code>.
+       </li>
+    </ol></ul>
+    <p></p>
+    <code><b>Code Listing:</b> guestBookView.jsp</code>
+	<table width="900">
+      <tr><td>
+<table width="6" class="baseFont0 upper1">
+<tr>
+<td>&nbsp;1<br />&nbsp;2<br />&nbsp;3<br />&nbsp;4<br />&nbsp;5<br />&nbsp;6<br />&nbsp;7<br />&nbsp;8<br />&nbsp;9<br />&nbsp;10<br />&nbsp;11<br />&nbsp;12
+<br />&nbsp;13<br />&nbsp;14<br />&nbsp;15<br />&nbsp;16<br />&nbsp;17<br />&nbsp;18<br />&nbsp;19<br />&nbsp;20<br />
+&nbsp;21<br />&nbsp;22<br />&nbsp;23<br />&nbsp;24<br />&nbsp;25<br />&nbsp;26<br />
+&nbsp;27<br />&nbsp;28<br />&nbsp;29<br />&nbsp;30<br />&nbsp;31<br />
+&nbsp;32<br />&nbsp;33<br />&nbsp;34<br />&nbsp;35<br />&nbsp;36<br />&nbsp;37<br />
+&nbsp;38<br />&nbsp;39<br />&nbsp;40<br />&nbsp;41<br />&nbsp;42<br />&nbsp;43<br />
+&nbsp;44<br />&nbsp;45<br />&nbsp;46<br />&nbsp;47<br />&nbsp;48<br />&nbsp;49<br />
+&nbsp;50<br />&nbsp;51<br />&nbsp;52<br />&nbsp;53<br />&nbsp;54<br />&nbsp;55<br />
+&nbsp;56<br />&nbsp;57<br />&nbsp;58<br />&nbsp;59<br />&nbsp;60<br />&nbsp;61<br />&nbsp;62<br />
+&nbsp;63<br />&nbsp;64<br />&nbsp;65<br />&nbsp;66<br /></td>
+</tr>
+</table>
+     </td>
+     <td>
+    <pre class="examplecode smfont">
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;
+
+&lt;%-- page settings --%&gt;
+&lt;%@ page import = "java.util.*" %&gt;
+&lt;%@ page import = "org.me.jsp.beans.*" %&gt;
+
+&lt;%-- GuestDataBean to obtain guest list --%&gt;
+<b>&lt;jsp:useBean id = "guestData" scope = "request" 
+   class = "org.me.jsp.beans.GuestDataBean" /&gt;</b>
+
+&lt;html xmlns = "http://www.w3.org/1999/xhtml"&gt;
+
+   &lt;head&gt;
+      &lt;title&gt;Guest List&lt;/title&gt;
+
+      &lt;style type = "text/css"&gt;
+         body { 
+            font-family: tahoma, helvetica, arial, sans-serif; 
+         }
+
+         table, tr, td, th { 
+            text-align: center;
+            font-size: .9em;
+            border: 3px groove;
+            padding: 5px;
+            background-color: #dddddd;
+         }
+      &lt;/style&gt;
+   &lt;/head&gt;
+
+   &lt;body&gt;
+      &lt;p style = "font-size: 2em;"&gt;Guest List&lt;/p&gt;
+
+      &lt;table&gt;
+         &lt;thead&gt;
+            &lt;tr&gt;
+               &lt;th style = "width: 100px;"&gt;Last name&lt;/th&gt;
+               &lt;th style = "width: 100px;"&gt;First name&lt;/th&gt;
+               &lt;th style = "width: 200px;"&gt;Email&lt;/th&gt;
+            &lt;/tr&gt;
+         &lt;/thead&gt;
+         &lt;tbody&gt;
+
+         &lt;% // start scriptlet
+
+            <b>List&lt;GuestBean&gt; guestList = guestData.getGuestList();</b>
+
+            for (GuestBean guest : guestList) {
+         %&gt; &lt;%-- end scriptlet; insert fixed template data --%&gt;
+               &lt;tr&gt;
+                  &lt;td&gt;&lt;%= guest.getLastName() %&gt;&lt;/td&gt;
+                  &lt;td&gt;&lt;%= guest.getFirstName() %&gt;&lt;/td&gt;
+                  &lt;td&gt;
+                     &lt;a href = "mailto:&lt;%= guest.getEmail() %&gt;"&gt;
+                        &lt;%= guest.getEmail() %&gt;&lt;/a&gt;
+                  &lt;/td&gt;
+               &lt;/tr&gt;
+         &lt;% // continue scriptlet
+            } // end for
+         %&gt; &lt;%-- end scriptlet --%&gt;
+         &lt;/tbody&gt;
+      &lt;/table&gt;
+   &lt;/body&gt;
+
+&lt;/html&gt;
+    </pre>
+    </td></tr>
+    </table>
+    <p></p>
+	<p></p>
+    This JSP accesses the database to retrieve all the guest records and display them.
+    <p></p>
+	<p></p>
+	<ul><ol>
+       <li>(Lines 9-10) &nbsp; Since the <code>GuestDataBean</code> instance <tt>guestData</tt> was created in the
+	   previous page, here the JSP does not create a new bean, it just uses the existing bean in the request scope.
+       </li>
+	   <p></p>
+	   <li>(Line 47) &nbsp; We use the DAO bean <code>GuestDataBean</code> to access the database to retrieve data.
+       </li>
+	   <p></p>
+	   <li>In this example, you can see there is no servlet. We do not use servlet to access the database, we use
+	   a DAO JavaBean to access the database. In this way, we can even eliminate the servlets.</li>
+	   <p></p>
+	   <li>Actually, many beginners tend to use the method in this example to develop Java web applications due to
+	   its simplicity. But there is some problem. In this way, you may not use a clear MVC structure. In deed, you
+	   mix the view and controller together, because in your JSP you do both data preparation and request dispatching
+	   as you see here. From the long run, separating the MVC layers clearly would make your software maintenance 
+	   easier in general.</li>
+	   <p></p>
+	   <li>One can convert this example by introducing a servlet as a controller.</li>
+	</ol></ul>
+    <p></p>
+    <p></p>
+	<p></p>
+    <p></p>
+	<center><span style="color: #D20106;">==========The End==========</span></center>
+  </div>
+</body>
+</html>

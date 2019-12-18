@@ -1,0 +1,388 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>CS4010 Fall 2019: Tutorial 2. Installing and Configuring Eclipse for Java EE</title>
+<style type="text/css">
+body {
+   color: #333333; 
+   margin: 0 auto;
+   font-size: 1em;
+   font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+   text-align: center;
+}
+h1 {
+   font-size: 1.6em;
+   color: #333;
+   font-weight : normal;
+   padding:10px;
+   margin: 20px 10px 10px 0px;
+   text-align:center;
+}
+h2 {
+   font-size: 1.3em;
+   color: black;  
+   font-weight : normal; 
+   padding:5px 0px 2px 0px;
+   margin:0px 0px 5px 0px;
+   border-bottom:1px solid #D1d1d1; 
+   text-align:left;
+}
+.baseFont { 
+   font-size: 1.1em;
+   font-family: helvetica, arial, sans-serif; 
+}
+.linegap1 {
+   line-height: 160%
+}
+.indent {
+   position: relative;
+   left: 1em;
+   width: 45em;
+}
+.inframe { 
+   border: 2px solid;
+   position:relative;
+   margin: 0 auto;
+   top: 5px;
+   color: black;
+   border-color: #00BFFF;
+   width: 50em;
+   display: block; 
+   padding: 1.5em;
+   text-align: left;
+   background-color: #FFF; 
+}
+pre {
+   background-color:#FFF8E4;
+   padding:10px;
+   font-size: 1.3em;
+   _font-size: 1.2em;
+}
+pre,samp,code,tt {
+   font-family: "Courier New", monospace;
+   font-size:1.1em;
+   color:black;
+}
+.examplecode  {
+   background-color:#FFF8E4;
+   overflow:auto;
+   width:95%;
+}
+</style>
+</head>
+<body>
+  <div class="inframe baseFont linegap1">
+    <h1>Tutorial 2. Installing and Configuring Eclipse for Java EE</h1>
+    <center>by Dr. Wenjie He</center>
+    <p></p>
+    <p></p>
+    <b>0. Overview</b>
+    <p></p>
+    <p></p>
+    Eclipse is the most popular Java Integrated Development Environment (IDE). It was created by IBM, and
+    then was donated to the open source community. In this class, we will use Eclipse as our main IDE for web
+    development. There are several different versions for the Eclipse. In this tutorial, we are going to
+    install the <i>Eclipse for Java EE</i> version. This version contains a lot of wizards for web projects,
+    which provide great convenience for Java-based web development.
+    <p></p>
+    <p></p>
+    <h2>1. Installing Java SE</h2>
+    <p></p>
+    <p></p>
+    Before you install <b>Eclipse for Java EE</b>, you need to make sure that you have installed the current Java SE
+	(Software Edition) on your computer. Eclipse relies on Java SE to run.<p></p>
+	Go to: <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">http://www.oracle.com/technetwork/java/javase/downloads/index.html</a>
+    to select appropriate version for your computer.
+	<p></p>
+    <p></p>
+	<b>Note:</b> Download Java JDK, not JRE, because JDK is used for developing Java programs, while JRE can only be used
+	for running compiled Java programs.
+	<p></p>
+    <p></p>
+    <img src="images2/JDK.png" alt="JDK" />
+    <p></p>
+	<p></p>
+	<b>Version:</b> Choose the right version to download. Here I want to talk about Windows versions. For other OS versions, 
+	you need to make necessary adjustment. <p></p>
+	There are two versions for Windows machines: Here I prefer the <tt>exe</tt> version.
+    <p></p>
+    <p></p>
+	<img src="images2/WinVersion.png" alt="winversion" />
+    <p></p>
+    <p></p>
+	Normal installation should work for this step.
+    <p></p>
+	<p></p>
+    <h2>2. Installing Eclipse for Java EE</h2>
+    <p></p>
+    <p></p>
+    <ul><ol>
+         <li>Go to <a href="http://www.eclipse.org/downloads/eclipse-packages/">http://www.eclipse.org/downloads/eclipse-packages/</a> to
+	     download the following version:
+         </li>
+	     <p></p>
+         <p></p>
+         <img src="images2/EclipseDown.png" alt="Download Eclipse" />
+         <p></p>
+         <p></p>
+         Choose the right version for the Eclipse for your machine.<p></p>
+		 <b>Note:</b> The <b>Eclipse for Java EE Developers</b> version contains the <b>Eclipse for Java Developers</b> version.
+		 If you already have an older version Eclipse on your machine, you do not have to uninstall it. There won't
+         be any conflict between different versions.		 
+         <p></p>
+		 <p></p>
+         <li>Create a folder for your installation. Here I use <code>C:\JavaEE\IDEs</code> for discussion purpose. 
+		 You can use a different folder as you like.
+		 <p></p>
+		 <p></p>
+		 <li>Unzip the file <code>eclipse-jee-2019-06-R-win32-x86_64.zip</code> (most likely for your system), 
+             and extract the files into the folder <code>C:\JavaEE\IDEs</code>. You would see a new folder
+	     <code>C:\JavaEE\IDEs\eclipse</code> created.
+         </li>
+		 <p></p>
+		 <p></p>
+	     <li>Rename the folder <code>eclipse</code> in <code>C:\JavaEE\IDEs</code> to 
+      	     <code>EclipseEE</code> (optional, and let you know it is the Java EE version).
+         </li>
+		 <p></p>
+		 <p></p>
+		 <li>In the <code>C:\JavaEE\IDEs\EclipseEE</code> folder, create a shortcut for the Eclipse icon
+	     <img src="images2/EcIcon.png" alt="Eclipse Icon" /> on your desktop.
+         </li>
+		 <p></p>
+		 <p></p>
+	     <li>Rename the shortcut on your desktop as <code>EclipseEE</code>, so that you can start your Eclipse easily
+		 from the Desktop.
+	     </li>
+		 <p></p>
+		 <p></p>
+    </ul></ol>
+    <p></p>
+    <p></p>
+    <h2>3. Running the Eclipse for Java EE</h2>
+    <p></p>
+    <p></p>
+    <ul><ol>
+       <li>Double-click the Eclipse shortcut on your desktop to start it.
+       </li>
+       <p></p>
+       <p></p>
+       <li>If a window pops up and asks you to unblock the software, click the <b>Unblock</b> button.
+       </li>
+	   <p></p>
+       <p></p>
+       <li>Now you see a window about the workspace folder for Eclipse,
+       </li>
+       <p></p>
+       <p></p>
+       <li>It is recommended to change the location for your workspace, because later you can access your projects from their
+	   paths relatively easier. Click the <b>Browser...</b> button, and navigate to the folder <code>C:\JavaEE\IDEs\EclipseEE</code>.
+	   Type <code>\workspace</code> after <code>C:\JavaEE\IDEs\EclipseEE</code>, and click <b>OK</b>.
+	   You would see
+       </li>
+       <p></p>
+       <p></p>
+       <img src="images/workspace.png" alt="New Workspace" />
+       <p></p>
+       <p></p>
+       Check the checkbox for <code>Use this as the default and do not ask again</code>. Click <b>OK</b>.
+       <p></p>
+       <p></p>
+       <li>The Eclipse Workbench window starts, and you see the welcome window of Eclipse,
+       </li>
+       <p></p>
+       <p></p>
+       <img src="images2/EcWelcome.png" alt="Eclipse Welcome" />
+       <p></p>
+       <p></p>
+       Click the cross sign of the welcome area to dismiss it, and you will get to the window below,
+       <p></p>
+       <p></p>
+       <img src="images2/EcOne.png" alt="Eclipse One" />
+       <p></p>
+       <p></p>
+   </ul></ol>
+   <p></p>
+   <p></p>
+   <h2>4. Configuring JDK in Eclipse for Java EE</h2>
+   <p></p>
+   <p></p>
+   <ul><ol>
+      <li>Open the <b>Preferences</b> window.
+      </li>
+      <p></p>
+      <p></p>
+      Go to the menu <b>Window</b> &rArr; select <b>Preferences...</b>. 
+      The <b>Preferences</b> window opens. 
+      <p></p>
+      <p></p>
+      <img src="images2/EcPreference.png" alt="Preferences" />
+      <p></p>
+      <p></p>
+      <li>Expand the <code>Java</code> node in the left column, and select the item 
+	  <code>Installed JREs</code>. 
+      </li>
+      <p></p>
+      <p></p>
+      <img src="images2/EcOriJRE.png" alt="Installed JREs" />
+      <p></p>
+      <p></p>
+      <li>Click the <b>Add...</b> button. A window pops up for you to select the JRE type. 
+      </li>
+      <p></p>
+      <p></p>
+      <img src="images2/EcJREtype.png" alt="Add JRE: JRE Type" />
+      <p></p>
+      <p></p>
+      Accept the default selection <b>Standard VM</b>, and click the <b>Next</b> button. You need
+      to provide the definition of JRE in the window below,
+      <p></p>
+      <p></p>
+      <img src="images2/EcNewJRE.png" alt="Add JRE: JRE definition" />
+      <p></p>
+      <p></p>
+      <li>Click the <b>Directory...</b> button and navigate to the <i>JDK 12.0</i> (the current JDK I just downloaded)
+	  installation directory (See the circled part for the default location). You would see
+      </li>
+      <p></p>
+      <p></p>
+      <img src="images2/EcNewJDK.png" alt="New JDK" />
+      <p></p>
+      <p></p>
+	  <b>Note:</b> Although you see JRE is required and we add a JDK version, JDK is a super version of JRE, and Tomcat
+	  may need some of the JDK features to run smoothly.
+	  <p></p>
+      <p></p>
+      <li>Click <b>Finish</b>. Then you are back to the <b>Preferences</b> window,
+      </li>
+      <p></p>
+      <p></p>
+      <img src="images2/BackPreference.png" alt="Preferences: JDK" />
+      <p></p>
+      <p></p>
+      Check the checkbox for <code>jdk12.0.2</code> to set it as your default JRE.
+      Click the <b>Apply and Close</b> button to make the change take effect.
+   </ul></ol>
+   <p></p>
+   <p></p>
+   <h2>5. Configuring server runtime for Tomcat</h2>
+   <p></p>
+   <p></p>
+   The default setting for <i>Eclipse for Java EE</i> does not connect to any server. 
+   <i>Eclipse for Java EE</i> has built-in support for many popular servers. To use any one of
+   the servers it supports, you need to install the server and configure it with the 
+   <i>Eclipse for Java EE</i>. If you have not installed Tomcat 8, you need to install it first. 
+   <p></p>
+   <p></p>
+   <b>Note:</b> Although there is a copy of Tomcat in the <tt>XAMPP</tt> installation directory, here I just show you
+   the general way to install Tomcat from the <i>Apache Software Foundation</i>.
+   <p></p>
+   <p></p>
+   Go to the Apache Tomcat download web site: 
+   <a href="http://tomcat.apache.org/download-80.cgi">http://tomcat.apache.org/download-80.cgi</a>
+   to download the recent version of Tomcat (Version 8, 8.5 is better).
+   <p></p>
+   <p></p>
+   <img src="images2/Tomcat8.png" alt="Tomcat 8" />
+   <p></p>
+   <p></p>
+   Unzip the Tomcat ZIP file to some folder. Here we put it in <tt>C:\JavaEE\Servers</tt>. Now our Tomcat's installation
+   directory or Tomcat Home directory is <tt>C:\JavaEE\Servers\apache-tomcat-8.5.45</tt>.
+   <p></p>
+   <p></p>
+   Now we can configure it.
+   <p></p>
+   <ul><ol>
+      <li>In the <b>Preferences</b> window used above, expand the <code>Server</code> node, 
+	  and select the <code>Installed Runtimes</code> item. You would see
+      </li> 
+      <p></p>
+      <p></p>
+      <img src="images2/EcRuntime.png" alt="Server Runtime" />
+      <p></p>
+      <p></p>
+      <li>Click the <b>Add...</b> button. The <b>New Server Runtime Environment</b> window opens.
+          Select the <code>Apache Tomcat v8.5</code> item. 
+      </li>
+      <p></p>
+      <p></p>
+      <img src="images2/EcTomV8.png" alt="Tomcat V8 in Eclipse" />
+      <p></p>
+      <p></p>
+      Check the checkbox for <tt>Create a new local server</tt>. Click <b>Next</b>,
+      <p></p>
+      <p></p>
+      <li>Click the <b>Browse...</b> button, and navigate to your Tomcat 8.5 installation directory. 
+	  Click <b>Select Folder</b> to load the information. In the drop-down box for JRE, select
+	  <code>jdk-12.0.2</code>. You would see
+      </li>
+      <p></p>
+      <p></p>
+      <img src="images2/ConnectTom.png" alt="Tomcat 8 Configure 3" />
+      <p></p>
+      <p></p>
+      <li>Click the <b>Finish</b> button. You are back to the <b>Preferences</b> window again,
+      </li>
+      <p></p>
+      <p></p>
+      <img src="images2/TomDone.png" alt="Tomcat 8 Configure 4" />
+      <p></p>
+      <p></p>
+      Click <b>Apply and Close</b> to dismiss the <b>Preferences</b> window. You will see the Eclipse window as follows,
+	  <p></p>
+      <p></p>
+      <img src="images2/EcServerNode.png" alt="Tomcat 8 Configure 5" />
+      <p></p>
+      <p></p>
+	  Now you are ready to develop Java web projects using <i>Eclipse Java EE IDE</i>.
+	  <p></p>
+      <p></p>
+	  You can try that <tt>Hello World</tt> example that we did in class to see if it works. If you feel that
+	  example I did using the <i>NetBeans</i> is not good enough for you to run it in Eclipse, I will post this
+	  example in another tutorial for you to study.
+	  <p></p>
+      <p></p>
+	  <hr />
+	  <p></p>
+      <p></p>
+	  <h2>Some comments about NetBeans IDE installation</h2>
+	  <p></p>
+      <p></p>
+	  If you want to install the <i>NetBeans IDE</i> for your Java web development, the instructions are much simpler,
+	  because you do not need to do any configuration after installation.
+	  <p></p>
+      <p></p>
+	  <ul>
+	    <li>Choose the right version</li>
+		<p></p>
+		Go to the NetBeans download web site: 
+        <a href="https://netbeans.org/downloads/8.2/">https://netbeans.org/downloads/8.2/</a>. You will see
+		<p></p>
+        <p></p>
+        <img src="images2/NetBeans.png" alt="NetBeans Download Page" />
+        <p></p>
+        <p></p>
+		If you do not have any preference, then you should choose the first circle; if you have some good reason, 
+		you can choose the second circle.
+		<p></p>
+        <p></p>
+		<li>Select Tomcat during the installation</li>
+		<p></p>
+        <p></p>
+		In one of the installation windows, you are asked to select servers. Tomcat is not selected by default. You should
+		check the checkbox for Tomcat. Then complete the installation. 
+	  </ul>
+	  
+   </ul></ol>
+   <p></p>
+   <p></p>
+    <p></p>
+	<p></p>
+    <p></p>
+	<center><span style="color: #D20106;">==========The End==========</span></center>
+  </div>
+</body>
+</html>

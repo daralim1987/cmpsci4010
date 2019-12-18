@@ -1,0 +1,1025 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>CS4010 Fall 2019: Tutorial 7 - Java Web Applications Using JDBC</title>
+<style type="text/css">
+body {
+   color: #333333; 
+   margin: 0 auto;
+   font-size: 1em;
+   font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+   text-align: center;
+}
+h1 {
+   font-size: 1.6em;
+   color: #333;
+   font-weight : normal;
+   padding:10px;
+   margin: 20px 10px 10px 0px;
+   text-align:center;
+}
+h2 {
+   font-size: 1.3em;
+   color: black;  
+   font-weight : normal; 
+   padding:5px 0px 2px 0px;
+   margin:0px 0px 5px 0px;
+   border-bottom:1px solid #D1d1d1; 
+   text-align:left;
+}
+.baseFont { 
+   font-size: 1.1em;
+   font-family: helvetica, arial, sans-serif; 
+}
+.baseFont0 { 
+   font-size: 0.8em;
+   font-family: helvetica, arial, sans-serif; 
+}
+.linegap1 {
+    line-height: 150%
+}
+.smfont {
+   font-size: 0.95em;
+}
+.smfont1 {
+   font-size: 0.9em;
+}
+.inframe { 
+   border: 2px solid;
+   position:relative;
+   margin: 0 auto;
+   top: 5px;
+   color: black;
+   border-color: #00BFFF;
+   width: 50em;
+   display: block; 
+   padding: 1.5em;
+   text-align: left;
+   background-color: #FFF; 
+}
+pre {
+   background-color:#FFF8E4;
+   padding:10px;
+   font-size: 1.3em;
+   _font-size: 1.2em;
+}
+pre,samp,code,tt {
+   font-family: "Courier New", monospace;
+   font-size:1.1em;
+   color:black;
+}
+.examplecode  {
+   background-color:#FFF8E4;
+   overflow:auto;
+   width:94%;
+}
+.tblthin {
+	border-collapse:collapse; 
+}
+.pad1 {
+	padding: 0.5em; 
+}
+.tbltd1 {
+   background-color:#F2F2F2;
+   padding:3px;
+   text-align: center;
+}
+.tblheader {
+   background-color:#CAD7F0;
+   color:#000000;
+   font-weight:bold;
+   padding:3px;
+}
+.align-right {
+   text-align: right;
+}  
+.align-center {
+   text-align: center;
+}
+.align-left {
+   text-align:left;
+}
+</style>
+</head>
+<body>
+  <div class="inframe baseFont linegap1">
+  <h1>Tutorial 7 - Java Web Applications Using JDBC</h1>
+    <center>by Dr. Wenjie He</center>
+    <p></p>
+    <p></p>
+    <h2>1. &nbsp; Introduction to JDBC</h2>
+    <p></p>
+    <p></p>
+    Different database vendors implement their <i>database management systems</i> (DBMS) in  different ways.
+    How to make Java programs communicate with so many different databases without any problem? It is
+    not a trivial task. 
+	<p></p>
+	<b>Source Code:</b> &nbsp; The source code of the example is given in <tt>Tutorial7_AnimalSurveyJDBC.zip</tt>.
+    <p></p>
+    <p></p>
+    <b>1.1 &nbsp; Separation of API and drivers</b>
+    <p></p>
+    <p></p>
+    After trying different ways, the Sun Java team finaly found an excellent solution:
+    <p></p>
+  <ol>
+    <li>Providing the application programmers the <i>Java Database Connectivity (JDBC)</i> API 
+	    (Application Programming Interface) for accessing and manipulating a wide range of relational
+	    databases.
+	</li>
+	<p></p>
+	<li>Providing the database vendors the JDBC Driver API for creating database-specific drivers that
+	    are responsible for accessing their (proprietary) databases.
+	</li>
+  </ol>
+    <p></p>
+	The benefit of this approach is obvious:
+    <p></p>
+  <ol>
+	<li>This separation of the API from particular drivers enables developers to change the underlying
+	    database without modifying Java code that accesses the database other than changing the 
+	    driver's name, the database URL, and <i>query strings</i>. 
+		<p></p>
+		<hr />
+		<b>Note:</b> &nbsp; In different databases, the query statements could be different. They may 
+		use different keywords sometimes. For example, the <tt>LIMIT</tt> is a keyword in MySQL, but is
+		not available in Oracle (at least up to certain version).
+		<hr />
+		<p></p>
+	</li>
+	<p></p>
+	<li>Database vendors are responsible for providing their own drivers to connect to their specific databases.
+	</li>
+	<p></p>
+	<li>Programs written according to the API talk to the driver manager, which, in turn, uses a
+	    driver to talk to the actual database.
+	</li>
+  </ol>
+    <p></p>
+    <p></p>
+    <b>1.2 &nbsp; JDBC API interfaces</b>
+    <p></p>
+    <p></p>
+    The JDBC API consists of classes and interfaces for the following tasks:
+    <p></p>
+  <ol>
+	<li>Establishing connections with databases;
+	</li>
+	<p></p>
+	<li>Sending SQL statements to databases;
+	</li>
+	<p></p>
+	<li>Processing results of the SQL statements;
+	</li>
+	<p></p>
+	<li>Obtaining database metadata.
+	</li>
+  </ol>
+    <p></p>
+    There are four key interfaces:
+  <ol>
+	<li><tt><b>Driver</b></tt>: &nbsp;&nbsp; for loading an appropriate driver;
+	</li>
+	<p></p>
+	<li><tt><b>Connection</b></tt>: &nbsp;&nbsp; for connecting to the database;
+	</li>
+	<p></p>
+	<li><tt><b>Statement</b></tt>: &nbsp;&nbsp; for creating and executing SQL statements;
+	</li>
+	<p></p>
+	<li><tt><b>ResultSet</b></tt>: &nbsp;&nbsp; for processing the result.
+	</li>
+  </ol>
+    <p></p>
+    <p></p>
+    <p></p>
+    <h2>2. &nbsp; Basics of Relational Database Model</h2>
+    <p></p>
+    <p></p>
+    <b>2.1 &nbsp; Basic concepts</b>
+    <p></p>
+    <p></p>
+  <div class="indent2">
+  <ul>
+    <li><i><b>Database</b></i>: 
+	</li>
+    <p></p>
+	&nbsp;&nbsp;&nbsp;&nbsp; A <tt><i>database</i></tt> is an integrated collection of data.
+	<p></p>
+    <p></p>
+	<li><i><b>Database management system (DBMS)</b></i>: 
+	</li>
+    <p></p>
+	&nbsp;&nbsp;&nbsp;&nbsp; A <tt><i>database management system</i></tt> provides mechanisims 
+	for storing and organizing data consistent with the database's format.
+	<p></p>
+    <p></p>
+	<li><i><b>Query</b></i>: 
+	</li>
+    <p></p>
+	&nbsp;&nbsp;&nbsp;&nbsp; Request information that satisfies given criteria
+	<p></p>
+    <p></p>
+	<li><i><b>Structured Query Language (SQL)</b></i>: 
+	</li>
+    <p></p>
+	&nbsp;&nbsp;&nbsp;&nbsp; <tt><i>SQL</i></tt> is used universally with relational-database systems
+    to perform queries and to manipulate data. 
+  	<p></p>
+    <p></p>
+	<li><i><b>Relation</b></i>: 
+	</li>
+    <p></p>
+	&nbsp;&nbsp;&nbsp;&nbsp; A <tt><i>relation</i></tt> is actually a table that consists of 
+    non-duplicate rows.
+	<p></p>
+    <p></p>
+	<li><i><b>Record</b></i>: 
+	</li>
+    <p></p>
+	&nbsp;&nbsp;&nbsp;&nbsp; Each row of a table is called a <tt><i>record</i></tt>. 
+	<p></p>
+    <p></p>
+	<li><i><b>Field</b></i> (or <tt><i>column</i></tt>, or <tt><i>attribute</i></tt> ): 
+	</li>
+    <p></p>
+	&nbsp;&nbsp;&nbsp;&nbsp; Each column of the table represents a <tt><i>field</i></tt>.
+	<p></p>
+    <p></p>
+	<li><i><b>Result Set</b></i>: </li>
+    <p></p>
+	&nbsp;&nbsp;&nbsp;&nbsp; The result of a query is called a <tt><i>result set</i></tt>.
+	<p></p>
+	<hr />
+	<b>Note:</b> &nbsp; Only the <tt>select</tt>-type queries have result sets returned. Other types 
+	(<tt>update, insert, delete</tt>) of queries do not have result sets returned.
+	<hr />
+    <p></p>
+	<li><i><b>Primary Key</b></i>:</li>
+    <p></p>
+	 &nbsp;&nbsp;&nbsp;&nbsp; A <tt><i>primary key</i></tt> is a field (or fields) in a table 
+	 that contain(s) unique data that cannot be duplicated in other records.
+	 <p></p>
+	<hr />
+	<b>Note:</b> &nbsp; Sometimes a single field is not sufficient to identify a record in a table, so we need
+	to use more than one field to identify a record. In this case, the primary key will be a <i>composite key</i>.
+	<hr />
+    <p></p>
+   </ul>
+   </div>
+    <p></p>
+	<p></p>
+    <b>2.2 &nbsp; Understanding the script</b> &nbsp; <tt>animaldb.sql</tt>
+    <p></p>
+	<p></p>
+    Our database script &nbsp; <tt>animaldb.sql</tt> is in &nbsp; <tt>Tutorial7_AnimalSurveyJDBC/AnimalSurvey</tt>
+    <p></p>
+	<p></p>
+    <tt><b>Code Listing:</b> animaldb.sql</tt>
+	<table width="900">
+      <tr><td>
+<table width="6" class="baseFont0">
+<tr>
+<td>&nbsp;1<br />&nbsp;2<br />&nbsp;3<br />&nbsp;4<br />&nbsp;5<br />&nbsp;6<br />&nbsp;7<br />&nbsp;8<br />&nbsp;9<br />&nbsp;10<br />&nbsp;11<br />&nbsp;12
+<br />&nbsp;13<br />&nbsp;14<br />&nbsp;</td>
+</tr>
+</table>
+     </td>
+     <td>
+    <pre class="examplecode smfont">
+DROP TABLE IF EXISTS surveyresults;
+CREATE TABLE surveyresults (
+   id int NOT NULL,
+   surveyoption varchar (20) NOT NULL,
+   votes int NOT NULL,
+   PRIMARY KEY (id)
+);
+
+INSERT INTO surveyresults VALUES 
+(1, 'Dog', 3),
+(2, 'Cat', 2),
+(3, 'Bird', 5),
+(4, 'Snake', 2),
+(5, 'None', 6);
+    </pre>
+     </td></tr>
+    </table>
+    <p></p>
+    <p></p>
+    <b>Explanation:</b>
+    <p></p>
+  <ol>
+    <li>We like to write MySQL keywords in capital letters, while keep table names and field names in lower case.
+	    It is not required, just our convention for clarity.</li>
+	<p></p>
+    <li>(Line 1) &nbsp; Drop the table to avoid the complain when you re-run the script. Otherwise, if 
+		the table already exists, the DBMS would not allow you to create the same table again.</li>
+	<p></p>
+  	<li>(Line 1) &nbsp; The <tt>IF EXISTS</tt> condition can avoid the complain when you run the
+		script the first time when there is no table to drop. If you do not have the 
+		<tt>IF EXISTS</tt> condition, although you see an error message, 
+		you can still populate your database normally. But usually people do not feel comfortable when
+		they see any error message.</li>
+	<p></p>
+	<li>(Lines 2-7) &nbsp; The <tt>CREATE TABLE</tt> statement specifies a table name, attributes
+		(or fields), and types.
+    </li>
+	<p></p>
+	<li>(Line 3) &nbsp; The <tt>id</tt> field is an <tt>int</tt> type, and <tt>NOT NULL</tt>
+		means a value of this field must be provided when a record is created.
+    </li>
+	<p></p>
+	<li>(Line 4) &nbsp; The <tt>varchar (20)</tt> means that the field <tt>surveyoption</tt> 
+	    is a variable-length string with at most 20 characters.
+    </li>
+	<p></p>
+	<li>(Line 6) &nbsp; The <tt>id</tt> field is declared as the primary key of the table.
+    </li>
+	<p></p>
+	<li>(Lines 9-14) &nbsp; This is a short way to insert 5 records into the table. There are several other ways to
+	    insert data.
+    </li>
+	<p></p>
+	<li>(Line 10) &nbsp; A string value must be wrapped in a pair of single quotes, but integers are not required to
+	be placed in single quotes. If you place integers in single quotes, there is no problem.
+	</li>
+   </ol>
+    <p></p>
+	<p></p>
+    <b>2.3. &nbsp; Populating database</b>
+    <p></p>
+    <p></p>
+    When we installed <tt><b>XAMPP</b></tt>, we took the default setting. The default <tt>username</tt> and
+	<tt>password</tt> for <tt>MySQL</tt> set in <tt><b>XAMPP</b></tt>: <tt>username=root</tt>, <tt>password=</tt><br />
+	(password is empty).
+    <p></p>
+	<p></p>
+    <b>Steps to populate database:</b>
+  <ol>
+    <li>Open a web browser and get to the <tt>phpmyadmin</tt> home page.
+	</li>
+	<p></p>
+    <p></p>
+	<center><img src="images/phpmyadmin0.png" alt="phpmyadmin 0" /></center>
+    <p></p>
+    <p></p>
+	<li>In the field <tt>Create new database</tt>, type the database name: <tt>animaldb</tt>,
+	</li>
+	<p></p>
+    <p></p>
+	<center><img src="images/phpmyadmin1.png" alt="phpmyadmin: create a new database" /></center>
+    <p></p>
+    <p></p>
+	and click the <b>Create</b> button. You would see a new database <tt>animaldb</tt> created.
+	<p></p>
+    <p></p>
+	<center><img src="images/phpmyadmin2.png" alt="phpmyadmin: database created" /></center>
+    <p></p>
+    <p></p>
+	<li>Click the <tt>SQL</tt> tab, and copy the <tt>animaldb.sql</tt> content into the area,
+	</li>
+	<p></p>
+    <p></p>
+	<center><img src="images/phpmyadmin3.png" alt="phpmyadmin: SQL script" /></center>
+    <p></p>
+    <p></p>
+	click the <b>Go</b> button, the database is populated as follows,
+	<p></p>
+    <p></p>
+	<center><img src="images/phpmyadmin4.png" alt="phpmyadmin: data populated" /></center>
+    <p></p>
+    <p></p>
+	<li>Click the icon in the circle above, you would see the data,
+	</li>
+	<p></p>
+    <p></p>
+	<center><img src="images/phpmyadmin5.png" alt="phpmyadmin: data" /></center>
+    <p></p>
+    <p></p>
+	Now we are ready to run the example.
+  </ol>
+    <p></p>
+    <p></p>
+    <h2>3 Developing Database Applications Using JDBC</h2>
+    <p></p>
+    <p></p>
+    We run the example <tt>AnimalSurvey</tt> first.
+    <p></p>
+    <p></p>
+    <b>3.1 Running the example</b>
+    <p></p>
+  <ol>
+    <li>Create a <b>Dynamic Web Project</b> called <tt>AnimalSurvey</tt> in the 
+        <b>Eclipse for Java EE</b>.</li>
+	<p></p>
+	&nbsp; &nbsp; <b>File</b> &nbsp; &rArr; &nbsp; <b>New</b> &nbsp; &rArr; &nbsp; <b>Dynamic Web Project</b>
+	<p></p>
+	<center><img src="images/dynamicwebproj.png" alt="Dynamic Web Project" /></center>
+	<p></p>
+    <p></p>
+	Type <tt>AnimalSurvey</tt> as the project name. When you click the <b>Next</b> button twice, you will see the window,
+	<p></p>
+    <p></p>
+	<center><img src="images/HasWebxml.png" alt="select web.xml" /></center>
+	<p></p>
+    <p></p>
+	<ul>
+	   <li>Make sure that you check the checkbox of <tt>Generate web.xml deployment descriptor</tt>.
+	       We will use this file to configure the welcome file.</li>
+	   <p></p>
+	   <li>Click <b>Finish</b>.</li>
+	</ul>
+	<p></p>
+	Then you will see your project tree as follows,
+    <p></p>
+	<center><img src="images/animalproj.png" alt="animal project" /></center>
+    <p></p>
+    <li>Create a package called <code>edu.umsl.servlets</code>.
+    </li>
+	<p></p>
+    <b>Right-click</b> the &nbsp; <b>src</b> &nbsp; node &nbsp; <b>&rArr; &nbsp; New &nbsp; &rArr; &nbsp; Package</b> 
+    <p></p>
+	<li>Copy the servlet <tt>SurveyServlet.java</tt> from <tt>Tutorial7_AnimalSurveyJDBC/AnimalSurvey</tt>
+	    into the package <tt>edu.umsl.servlets</tt> by drag-and-drop.</li>
+	<p></p>
+	<hr />
+	<b>Note:</b> &nbsp; Since <tt>SurveyServlet.java</tt> uses an annotation (<tt>@WebServlet("/SurveyServlet")</tt>) 
+	to configure the servlet, we do not need to update the <tt>web.xml</tt> for this servlet.
+	<hr />
+	<p></p>
+	<li>Drag-and-drop the file <tt>Tutorial7_AnimalSurveyJDBC/AnimalSurvey/Survey.html</tt> onto the <tt>WebContent</tt> node.
+	</li>
+	<p></p>
+	<li>Expand the node <tt>WebContent</tt> <b>&rArr;</b> expand the node <tt>WEB-INF</tt>
+	    <b>&rArr;</b> double-click the node <tt>web.xml</tt> to open it in the source area.
+	    Change the following line</li>
+	<pre class="examplecode">
+&lt;welcome-file&gt;index.html&lt;/welcome-file&gt;
+	</pre>
+	to
+	<pre class="examplecode">
+&lt;welcome-file&gt;<b>Survey.html</b>&lt;/welcome-file&gt;
+	</pre>
+	<li>Drag-and-drop the MySQL driver JAR file <tt>mysql-connector-java-5.1.7-bin.jar</tt> from
+	    <tt>T6_JDBC/AnimalSurvey</tt> onto the node
+	    <tt>AnimalSurvey/WEB-INF/lib</tt> of your project. </li>
+		<p></p>
+		<hr />
+		<b>Option:</b> &nbsp; Or you can copy the driver file into the <tt>lib</tt>
+		file under your Tomcat's installation directory. In this way, you only do it once. When you develop other Java
+		web applications, the MySQL JDBC driver will be available all the time.
+		<hr />
+	    <p></p>
+	<li>Run the project.</li>
+	<p></p>
+    <b>Right-click</b> the project node &nbsp; <b>&rArr; &nbsp; Run As &nbsp; &rArr; &nbsp; Run on Server</b> 
+    <p></p>
+	You would see,
+	<p></p>
+	<center><img src="images/runonserver1.png" alt="Run on Server 1" /></center>
+    <p></p>
+	<ul>
+	   <li>If you are not sure if this project is the only one configured, click <b>Next</b>. In this case, you have
+	       a chance to remove other projects from the configured list to avoid potential conflict.</li>
+	   <p></p>
+	   <li>If you are sure that this project is the only one configured, click <b>Finish</b>. The project will start
+	       immediately.</li>
+	</ul>
+	<p></p>
+	When you click <b>Next</b>, you would see,
+	<p></p>
+	<center><img src="images/runonserver2.png" alt="Run on Server 2" /></center>
+    <p></p>
+	You can see there are more than one project in the configured list. Click <b>Remove All</b> to remove all the project
+	<b>except</b> the current one in the configured list.
+	<p></p>
+	<center><img src="images/runonserver3.png" alt="Run on Server 3" /></center>
+    <p></p>
+	Click <b>Finish</b> to run the current project. You would see
+    <p></p>
+	<center><img src="images/animal1.png" alt="animal 1" /> &nbsp; &nbsp; 
+	        <img src="images/animal2.png" alt="animal 2" /> 
+	</center>
+    <p></p>
+    <p></p>
+   </ol>
+    <p></p>
+      <b>3.2 Source code</b>
+      <p></p>
+      <p></p>
+      <tt><b>Code Listing:</b> SurveyServlet.java</tt>
+	  <table width="900">
+      <tr><td>
+<table width="6" class="baseFont0">
+<tr>
+<td>&nbsp;1<br />&nbsp;2<br />&nbsp;3<br />&nbsp;4<br />&nbsp;5<br />&nbsp;6<br />&nbsp;7<br />&nbsp;8<br />&nbsp;9<br />&nbsp;10<br />&nbsp;11<br />&nbsp;12
+<br />&nbsp;13<br />&nbsp;14<br />&nbsp;15<br />&nbsp;16<br />&nbsp;17<br />&nbsp;18<br />&nbsp;19<br />&nbsp;20
+<br />&nbsp;21<br />&nbsp;22<br />&nbsp;23<br />&nbsp;24<br />&nbsp;25<br />&nbsp;26<br />&nbsp;27<br />&nbsp;28
+<br />&nbsp;29<br />&nbsp;30<br />&nbsp;31<br />&nbsp;32<br />&nbsp;33<br />&nbsp;34<br />&nbsp;35<br />&nbsp;36
+<br />&nbsp;37<br />&nbsp;38<br />&nbsp;39<br />&nbsp;40<br />&nbsp;41<br />&nbsp;42<br />&nbsp;43<br />&nbsp;44
+<br />&nbsp;45<br />&nbsp;46<br />&nbsp;47<br />&nbsp;48<br />&nbsp;49<br />&nbsp;50<br />&nbsp;51<br />&nbsp;52
+<br />&nbsp;53<br />&nbsp;54<br />&nbsp;55<br />&nbsp;56<br />&nbsp;57<br />&nbsp;58<br />&nbsp;59<br />&nbsp;60
+<br />&nbsp;61<br />&nbsp;62<br />&nbsp;63<br />&nbsp;64<br />&nbsp;65<br />&nbsp;66<br />&nbsp;67<br />&nbsp;68
+<br />&nbsp;69<br />&nbsp;70<br />&nbsp;71<br />&nbsp;72<br />&nbsp;73<br />&nbsp;74<br />&nbsp;75<br />&nbsp;76
+<br />&nbsp;77<br />&nbsp;78<br />&nbsp;79<br />&nbsp;80<br />&nbsp;81<br />&nbsp;82<br />&nbsp;83<br />&nbsp;84
+<br />&nbsp;85<br />&nbsp;86<br />&nbsp;87<br />&nbsp;88<br />&nbsp;89<br />&nbsp;90<br />&nbsp;91<br />&nbsp;92
+<br />&nbsp;93<br />&nbsp;94<br />&nbsp;95<br />&nbsp;96<br />&nbsp;97<br />&nbsp;98<br />&nbsp;99<br />&nbsp;100
+<br />&nbsp;101<br />&nbsp;102<br />&nbsp;103<br />&nbsp;104<br />&nbsp;105<br />&nbsp;106<br />&nbsp;107<br />&nbsp;108
+<br />&nbsp;109<br />&nbsp;110<br />&nbsp;111<br />&nbsp;112<br />&nbsp;113<br />&nbsp;114<br />&nbsp;115<br />&nbsp;116
+<br />&nbsp;117<br />&nbsp;118<br />&nbsp;119<br />&nbsp;120<br />&nbsp;121<br />&nbsp;122<br />&nbsp;123<br />&nbsp;124
+<br />&nbsp;125<br />&nbsp;126<br />&nbsp;127<br />&nbsp;128<br />&nbsp;129<br />&nbsp;130<br />&nbsp;131<br />&nbsp;132
+<br />&nbsp;133<br />&nbsp;134<br />&nbsp;135<br />&nbsp;136<br />&nbsp;137<br />&nbsp;138<br />&nbsp;139<br />&nbsp;140
+<br />&nbsp;141<br />&nbsp;142<br />&nbsp;143<br />&nbsp;144<br />&nbsp;145<br />&nbsp;146<br />&nbsp;147<br />&nbsp;148
+<br />&nbsp;149<br />&nbsp;150<br />&nbsp;</td>
+</tr>
+</table>
+     </td>
+     <td>
+    <pre class="examplecode smfont">
+package edu.umsl.servlets;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.DecimalFormat;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.UnavailableException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/SurveyServlet")
+public class SurveyServlet extends HttpServlet {
+   private static final long serialVersionUID = 1L;
+   private Connection connection;
+   private PreparedStatement updateVotes, totalVotes, results;
+
+   // set up database connection and prepare SQL statements
+
+   public void init(ServletConfig config) throws ServletException {
+      // attempt database connection and create PreparedStatements
+      try {
+         Class.forName("com.mysql.jdbc.Driver");
+         connection = DriverManager.getConnection(
+                  "jdbc:mysql://localhost:3306/animaldb", "root", "");
+
+         // PreparedStatement to add one to vote total for a
+         // specific animal
+
+         updateVotes = connection
+               .prepareStatement("UPDATE surveyresults SET votes = votes + 1 "
+               + "WHERE id = ?");
+
+         // PreparedStatement to sum the votes
+
+         totalVotes = connection
+               .prepareStatement("SELECT sum( votes ) FROM surveyresults");
+
+         // PreparedStatement to obtain surveyoption table's data
+
+         results = connection
+               .prepareStatement("SELECT surveyoption, votes, id "
+               + "FROM surveyresults ORDER BY id");
+      } // for any exception throw an UnavailableException to
+        // indicate that the servlet is not currently available
+      catch (Exception exception) {
+         exception.printStackTrace();
+         throw new UnavailableException(exception.getMessage());
+      }
+   } // end of init method
+
+   // process survey response
+
+   protected void doPost(HttpServletRequest request,
+         HttpServletResponse response) throws ServletException, IOException {
+
+      // set up response to client
+      response.setContentType("text/html");
+      PrintWriter out = response.getWriter();
+      DecimalFormat twoDigits = new DecimalFormat("0.00");
+
+      // start XHTML document
+
+      out.println("&lt;?xml version = \"1.0\"?&gt;");
+      out.println("&lt;!DOCTYPE html PUBLIC \"-//W3C//DTD "
+            + "XHTML 1.0 Strict//EN\" \"http://www.w3.org"
+            + "/TR/xhtml1/DTD/xhtml1-strict.dtd\"&gt;");
+
+      out.println("&lt;html xmlns = \"http://www.w3.org/1999/xhtml\"&gt;");
+
+      // head section of document
+      out.println("&lt;head&gt;");
+
+      // read current survey response
+
+      int value = Integer.parseInt(request.getParameter("animal"));
+
+      // attempt to process a vote and display current results
+
+      try {
+         // update total for current survey response
+
+         updateVotes.setInt(1, value);
+         updateVotes.executeUpdate();
+
+         // get total of all survey responses
+
+         ResultSet totalRS = totalVotes.executeQuery();
+         totalRS.next();
+         int total = totalRS.getInt(1);
+         // get results
+         ResultSet resultsRS = results.executeQuery();
+         out.println("&lt;title&gt;Thank you!&lt;/title&gt;");
+         out.println("&lt;/head&gt;");
+         out.println("&lt;body&gt;");
+         out.println("&lt;p&gt;Thank you for participating.");
+         out.println("&lt;br /&gt;Results:&lt;/p&gt;&lt;pre&gt;");
+
+         // process results
+         int votes;
+
+         while (resultsRS.next()) {
+            out.print(resultsRS.getString(1));
+            out.print(": ");
+            votes = resultsRS.getInt(2);
+            out.print(twoDigits.format((double) votes / total * 100));
+            out.print("%  responses: ");
+            out.println(votes);
+         }
+         resultsRS.close();
+         out.print("Total responses: ");
+         out.print(total);
+         // end XHTML document
+         out.println("&lt;/pre&gt;&lt;/body&gt;&lt;/html&gt;");
+         out.close();
+      } // if database exception occurs, return error page
+      catch (SQLException sqlException) {
+         sqlException.printStackTrace();
+         out.println("&lt;title&gt;Error&lt;/title&gt;");
+         out.println("&lt;/head&gt;");
+         out.println("&lt;body&gt;&lt;p&gt;Database error occurred. ");
+         out.println("Try again later.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;");
+         out.close();
+      }
+   }
+
+   // close SQL statements and database when servlet terminates
+
+   public void destroy() {
+      // attempt to close statements and database connection
+      try {
+         updateVotes.close();
+         totalVotes.close();
+         results.close();
+         connection.close();
+      } // handle database exceptions by returning error to client
+      catch (SQLException sqlException) {
+         sqlException.printStackTrace();
+      }
+   } // end of destroy method
+
+}
+    </pre>
+     </td></tr>
+    </table>
+      <p></p>
+      <p></p>
+      <b>3.2.1 Database preparation</b>
+      <p></p>
+      <p></p>
+      Before you can start programming on JDBC, you need to do some preparation work to get your database ready
+      in the following steps:
+      <p></p>
+      <p></p>
+      <ol>
+           <li>Get the database driver JAR file. We get the MySQL driver <tt>mysql-connector-java-5.1.7-bin.jar</tt> from
+	       the MySQL website. (Your version could be different.)</li>
+		   <p></p>
+	   <li>Place the database driver into the right folder. In this example, we place it into the folder
+	       <tt>AnimalSurvey/WEB-INF/lib</tt>. There is another location in Tomcat where we can put 
+	       the driver. (In <tt>[TOMCAT_HOME]/lib</tt>)</li>
+		   <p></p>
+  	   <li>Make sure that your database server is up and running. Since we installed MySQL database server
+	       as a Windows service, it is always running. If you use some other database, you may need to start
+	       the database server manually.</li>
+		   <p></p>
+	   <li>Verify that you have created and populated the database.</li>
+		   <p></p>
+	   <li>Find the database URL. Here our database URL is</li>
+	   <pre class="examplecode">
+<b>jdbc:mysql://localhost:3306/animaldb</b>
+	   </pre>
+	   For MySQL, you just append your database name after <tt>jdbc:mysql://localhost:3306/</tt>
+	   to form the database URL.
+      </ol>
+      <p></p>
+      <p></p>
+      <b>3.2.2 Loading the driver</b>
+      <p></p>
+      <p></p>
+      You need to tell the JVM which driver class to load. See
+	  <table width="900">
+      <tr><td>
+<table width="6" class="baseFont0">
+<tr>
+<td>&nbsp;31<br />&nbsp;</td>
+</tr>
+</table>
+     </td>
+     <td>
+    <pre class="examplecode smfont">
+<b>Class.forName("com.mysql.jdbc.Driver");</b>
+    </pre>
+     </td></tr>
+    </table>
+      <p></p>
+      <b>Explanation:</b>
+      <ol>
+           <li>The name of MySQL driver class is <tt>com.mysql.jdbc.Driver</tt>. You may ask how to find
+	       the name of this class. One way is searching on web. Another way is using the <b>WinZip</b> 
+	       software to open the driver's JAR file <tt>mysql-connector-java-5.1.7-bin.jar</tt>. By examining
+	       the filenames, you should be able to find the driver class as follows,</li>
+           <p></p>
+           <p></p>
+	   <center><img src="images/mysqldriver.gif" alt="MySQL Driver Class" /></center>
+           <p></p>
+           <p></p>
+  	   <li>(Line 31) &nbsp; The JVM loads the class <tt>com.mysql.jdbc.Driver</tt> 
+	        (and other related classes) into the memory
+		using the static method <tt>forName</tt> of <tt>Class</tt>. Since we put the
+		<tt>mysql-connector-java-5.1.7-bin.jar</tt> file in the location 
+	 	<tt>AnimalSurvey/WEB-INF/lib</tt>, this is one of the locations that the JVM knows to
+		search for the class.</li>
+		   <p></p>
+	   <li>(Line 31) &nbsp; The JVM loads the class <tt>com.mysql.jdbc.Driver</tt> at the runtime.
+	        That means even if you type the class name <tt>com.mysql.jdbc.Driver</tt> wrong, you
+		would not get any compile error for it. But when you run the code, you would encounter
+		a runtime error with a <tt>ClassNotFoundException</tt>.</li>
+		   <p></p>
+	   <li>A driver is a concrete class that implements the <tt>java.sql.Driver</tt> interface.
+	       The database vendor provides the implementation of this class.</li>
+		   <p></p>
+	   <li>After the class <tt>com.mysql.jdbc.Driver</tt> is loaded, we call it registered. That means
+	       the JVM makes it available for other classes to use in memory.</li>
+      </ol>
+      <p></p>
+      <p></p>
+      <b>3.2.2 Establishing the connection</b>
+      <p></p>
+      <p></p>
+      A connection is required between the database and the Java program for data communication.
+	  <table width="900">
+      <tr><td>
+<table width="6" class="baseFont0">
+<tr>
+<td>&nbsp;32<br />&nbsp;33<br />&nbsp;</td>
+</tr>
+</table>
+     </td>
+     <td>
+    <pre class="examplecode smfont">
+<b>connection = DriverManager.getConnection(
+      "jdbc:mysql://localhost:3306/animaldb", "root", "");</b>
+    </pre>
+     </td></tr>
+    </table>
+      <p></p>
+      <b>Explanation:</b>
+      <ol>
+  	   <li>(Line 32) &nbsp; The <tt>java.sql.DriverManager</tt> class provides the basic service for 
+		managing a set of JDBC drivers.</li>
+		   <p></p>
+	   <li>(Line 32) &nbsp; When the static method <tt>getConnection</tt> of class 
+	       <tt>DriverManager</tt> is called, the <tt>DriverManager</tt> attempts 
+	       to select an appropriate driver from the set of registered JDBC drivers.</li>
+		   <p></p>
+	   <li>(Lines 32-33) &nbsp; The <tt>getConnection</tt> method attempts to establish a connection 
+		to the given database URL with the <tt>username</tt> and <tt>password</tt>.</li>
+		   <p></p>
+	   <li>(Lines 32-33) &nbsp; The <tt>getConnection</tt> method returns a 
+	        <tt>java.sql.Connection</tt> object that represents a session/connection with a specific 
+		database. Within the context of a <tt>Connection</tt>, SQL statements are executed 
+	        and results are returned.</li>
+      </ol>
+      <p></p>
+      <p></p>
+      <b>3.2.3 Creating statements</b>
+      <p></p>
+      <p></p>
+      In order to send SQL statements to and get results back from the database, we need to create 
+      <tt>Statement</tt> objects.
+      <table width="900">
+      <tr><td>
+<table width="6" class="baseFont0">
+<tr>
+<td>&nbsp;38<br />&nbsp;39<br />&nbsp;40<br />&nbsp;</td>
+</tr>
+</table>
+     </td>
+     <td>
+    <pre class="examplecode smfont">
+<b>updateVotes = connection
+         .prepareStatement("UPDATE surveyresults SET votes = votes + 1 "
+         + "WHERE id = ?");</b>
+    </pre>
+     </td></tr>
+    </table>
+	<p></p>
+      <b>Explanation:</b>
+      <ol>
+  	   <li>(Line 39) &nbsp; The <tt>prepareStatement</tt> method of the <tt>Connection</tt> class
+		   creates a <tt>PreparedStatement</tt> object for sending parameterized SQL statements to the database.</li>
+		   <p></p>
+	   <li>The <tt>PreparedStatement</tt> interface is a subinterface of the 
+		   <tt>Statement</tt> interface.</li>
+		   <p></p>
+	   <li>A <tt>Statement</tt> object is used to send <i>only</i> non-parameterized SQL statements; 
+	       a <tt>PreparedStatement</tt> object can be used to send <i>either</i> parameterized 
+	       SQL statements <i>or</i> non-parameterized SQL statements.</li>
+		   <p></p>
+	   <li>(Lines 38-40) &nbsp; The statement we have here is a parameterized SQL statement, because
+		it contains a <tt>?</tt> that is called an IN parameter. The value of this parameter 
+		will be provided later.</li>
+		   <p></p>
+	   <li>An SQL statement with or without IN parameters can be pre-compiled and stored in a 
+	       <tt>PreparedStatement</tt> object. This object can then be used to efficiently 
+	       execute this statement multiple times.</li>
+	   <p></p>
+	   <li>The <tt>prepareStatement</tt> method of the <tt>Connection</tt> is optimized for 
+	       handling parametric SQL statements that benefit from precompilation.</li>
+	   <p></p>
+	   <li>Lines 44-45 and Lines 49-51 give two non-parameterized SQL statements.</li>
+	   <table width="900">
+      <tr><td>
+<table width="6" class="baseFont0">
+<tr>
+<td>&nbsp;44<br />&nbsp;45<br />&nbsp;</td>
+</tr>
+</table>
+     </td>
+     <td>
+    <pre class="examplecode smfont">
+totalVotes = connection
+       .prepareStatement("SELECT sum( votes ) FROM surveyresults");
+    </pre>
+     </td></tr>
+    </table>
+      and
+	  <table width="900">
+      <tr><td>
+<table width="6" class="baseFont0">
+<tr>
+<td>&nbsp;49<br />&nbsp;50<br />&nbsp;51<br />&nbsp;</td>
+</tr>
+</table>
+     </td>
+     <td>
+    <pre class="examplecode smfont">
+results = connection
+       .prepareStatement("SELECT surveyoption, votes, id "
+       + "FROM surveyresults ORDER BY id");
+    </pre>
+     </td></tr>
+    </table>
+    <p></p>
+      </ol>
+      <p></p>
+      <p></p>
+      <b>3.2.4 Executing statements</b>
+      <p></p>
+      <p></p>
+      In order to execute a parameterized SQL statement, we need to set the value(s) to the IN parameter(s).
+	  <table width="900">
+      <tr><td>
+<table width="6" class="baseFont0">
+<tr>
+<td>&nbsp;91<br />&nbsp;92<br />&nbsp;</td>
+</tr>
+</table>
+     </td>
+     <td>
+    <pre class="examplecode smfont">
+updateVotes.setInt(1, value);
+updateVotes.executeUpdate();
+    </pre>
+     </td></tr>
+    </table>
+      <p></p>
+      <b>Explanation:</b>
+      <ol>
+  	   <li>(Line 91) &nbsp; The <tt>setInt</tt> method of a <tt>PreparedStatement</tt> object
+		sets the designated parameter to an <tt>int</tt> value. The index <tt>1</tt>
+		means the value should go to the <i>first</i> <tt>?</tt> in the parameterized SQL statement.</li>
+	   <p></p>
+	   <li>(Line 91) &nbsp; Here we use the Java's generic way (e.g. Java's <tt>int</tt> value) to 
+		handle the SQL statements, so that the programmers can write database-independent code. Then 
+		the driver would convert the <tt>int</tt> value to a database-specific SQL 
+	 	<tt>INTEGER</tt> value when it sends it to the database. This conversion is hidden to
+		the programmers.</li>
+	   <p></p>
+	   <li>(Line 92) &nbsp; Executes the SQL statement in this <tt>PreparedStatement</tt> object, 
+		which must be an SQL <tt>INSERT, UPDATE</tt> or <tt>DELETE</tt> statement; or an 
+		SQL statement that returns nothing.</li>
+      </ol>
+      <p></p>
+      <p></p>
+      <b>3.2.5 Processing Query Results</b>
+      <p></p>
+      <p></p>
+      The query result is returned in a <tt>ResultSet</tt> object, and we will process it to complete
+      the last step of the JDBC procedure.
+	  <table width="900">
+      <tr><td>
+<table width="6" class="baseFont0">
+<tr>
+<td>&nbsp;96<br />&nbsp;97<br />&nbsp;98<br />&nbsp;</td>
+</tr>
+</table>
+     </td>
+     <td>
+    <pre class="examplecode smfont">
+ResultSet totalRS = totalVotes.executeQuery();
+totalRS.next();
+int total = totalRS.getInt(1);
+    </pre>
+     </td></tr>
+    </table>
+      and
+	  <table width="900">
+      <tr><td>
+<table width="6" class="baseFont0">
+<tr>
+<td>&nbsp;100<br />&nbsp;<br />&nbsp;110<br />&nbsp;111<br />&nbsp;112<br />&nbsp;113
+<br />&nbsp;114<br />&nbsp;115<br />&nbsp;116<br />&nbsp;117<br />&nbsp;</td>
+</tr>
+</table>
+     </td>
+     <td>
+    <pre class="examplecode smfont">
+ResultSet resultsRS = results.executeQuery();
+    ...
+while (resultsRS.next()) {
+   out.print(resultsRS.getString(1));
+   out.print(": ");
+   votes = resultsRS.getInt(2);
+   out.print(twoDigits.format((double) votes / total * 100));
+   out.print("%  responses: ");
+   out.println(votes);
+}
+    </pre>
+     </td></tr>
+    </table>
+    <p></p>
+      <b>Explanation:</b>
+      <ol>
+  	   <li>(Line 96) &nbsp; Executes the SQL query in this <tt>PreparedStatement</tt> object and 
+		returns the <tt>ResultSet</tt> object generated by the query. The <tt>ResultSet</tt> 
+		object holds the table of data representing a database result set.</li>
+	   <p></p>
+	   <li>(Line 96) &nbsp; A <tt>ResultSet</tt> object maintains a cursor pointing to its current 
+		row of data. Initially the cursor is positioned before the first row. Since the cursor does
+		not point to any row at this time, it points to <tt>null</tt>.</li>
+	   <p></p>
+	   <li>(Line 97) &nbsp; In order to access the first row of the result set, the <tt>next()</tt> 
+		method of the <tt>ResultSet</tt> object is called, which moves the cursor from the
+		<tt>null</tt> position to the first row (if there is a first row).</li>
+	   <p></p>
+	   <li>(Line 98) &nbsp; The integer value <tt>1</tt> in <tt>getInt(1)</tt> refers to 
+		the <i>first</i> column of the <tt>ResultSet</tt> object (not the original table). 
+		Since the first column of the <tt>ResultSet</tt> object 
+		is an integer, the <tt>getInt(int)</tt> method of the 
+	    <tt>ResultSet</tt> object is called to return an integer value.</li>
+	   <p></p>
+	   <li>(Line 98) &nbsp; The JDBC driver takes care of the conversion between the 
+		database-specific <tt>INTEGER</tt> data to the Java <tt>int</tt> data.</li>
+	   <p></p>
+	   <li>(Line 110) &nbsp; The <tt>next()</tt> method of the <tt>ResultSet</tt> object
+	        moves the cursor down one row from its current position. It returns a <tt>boolean</tt>
+		value. If the new current row is valid, it returns <tt>true</tt>; 
+		if there are no more rows, it returns <tt>false</tt>.</li>
+	   <p></p>
+	   <li>(Line 111) &nbsp; The <tt>getString(int)</tt> method of the <tt>ResultSet</tt> object
+	        does a similar way to that of <tt>getInt(int)</tt>, but for the <tt>String</tt> returned data.</li>
+    </ol>
+    <p></p>
+	<b>Note:</b> &nbsp; In this servlet, we use the annotation <tt>@WebServlet("/SurveyServlet")</tt> to configure
+	the URL pattern of the servlet. So there is no need to configure it in the <tt>web.xml</tt>. 
+    <p></p>
+    <p></p>
+    <p></p>
+	<p></p>
+    <p></p>
+	<center><span style="color: #D20106;">==========The End==========</span></center>
+  </div>
+</body>
+</html>
